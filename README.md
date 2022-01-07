@@ -9,34 +9,9 @@ This project is built based on basically two technologies described as follows:
 * Python
 * Angular 
 
-Also, it is based on 3 docker machines so we will be using a VMware to create them , thus please run the following instructions:
 
-## for Ubuntu 
-
-```bash
-$ sudo apt-get install virtualbox
-$ curl -L https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine &&
-chmod +x /tmp/docker-machine && sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
-
-```
-## for Windows
-If you have not yet installed Docker for Windows, please see this link https://docs.docker.com/docker-for-windows/install/ for an explanation.
-To Create machines locally using VirtualBox https://www.virtualbox.org/. This driver requires VirtualBox 5+ to be installed on your host. Using VirtualBox 4.3+ should work but will give you a warning. Older versions will refuse to work. 
-
-Now, you are ready to create a docker machine, please run the following command on your cmd:
-```
-docker-machine create --driver virtualbox "the machine's name" 
-```
-Please make sure to give the following names to the created machines : "manager" , "worker1", "worker2" since we used them in our code.
-<br> </br>
-You can verify the creation of the machines by running:
-```
-$ docker-machine ls
-```
-
-At this point, we have to create a swarm where one of the machine is a manager and the two others are workers.
-First, connect to the manager using <strong> docker-machine ssh "its name" </strong> .
-Then, to create the swarm, you have first to get the IP address of your manager using <strong> "ifconfig" </strong> and <strong> "ip addr" </strong> and then run the following command:
+At this point, we have to create a swarm where one of the machine is a manager and others are workers.
+First, connect to the manager using ssh, Then, to create the swarm, you have first to get the IP address of your manager using <strong> "ifconfig" </strong> and <strong> "ip addr" </strong> and then run the following command:
 ```
 $ docker swarm init --advertise-addr ip-adress
 ```
@@ -58,8 +33,8 @@ Now we have to install some services for Docker Swarm monitoring in the manager 
     
 ## Install
 ```bash
-$ git clone https://github.com/anwarghammam/Monitoring-Docker-Swarm
-$ cd Monitoring-Docker-Swarm/
+$ git clone https://github.com/anwarghammam/docker-swarm-monitoring-arm64
+$ cd docker-swarm-monitoring-arm64/
 $ docker stack deploy --compose-file docker-compose.yml p
 ```
 
