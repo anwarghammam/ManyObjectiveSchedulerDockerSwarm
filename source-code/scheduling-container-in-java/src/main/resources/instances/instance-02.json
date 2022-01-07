@@ -1,0 +1,99 @@
+{
+    "name": "instance-02",
+    "nodes": [{
+        "id": 0,
+        "name": "manager",
+        "activated": true
+    }, {
+        "id": 1,
+        "name": "worker_1",
+        "activated": true
+    }, {
+        "id": 2,
+        "name": "worker_2",
+        "activated": true
+    }],
+    "containers": [{
+        "id": 0,
+        "name": "p1_nginx",
+        "dependencies": [],
+        "placements": []
+    }, {
+        "id": 1,
+        "name": "p1_visualizer",
+        "dependencies": [],
+        "placements": [0],
+        
+    }, {
+        "id": 2,
+        "name": "p1_prometheus",
+        "dependencies": [8, 9],
+        "placements": [0],
+        
+    }, {
+        "id": 3,
+        "name": "p1_creator",
+        "dependencies": [11],
+        "placements": [],
+         "power_consumption": 80,
+        "priority": 2
+    }, {
+        "id": 4,
+        "name": "p1_web",
+        "dependencies": [11],
+        "placements": [],
+         "power_consumption": 80,
+        "priority": 2
+    }, {
+        "id": 5,
+        "name": "p1_grafana",
+        "dependencies": [2],
+        "placements": [1, 2],
+       
+    }, {
+        "id": 6,
+        "name": "p1_redis",
+        "dependencies": [],
+        "placements": [],
+       
+    }, {
+        "id": 7,
+        "name": "p1_rabbitmq",
+        "dependencies": [],
+        "placements": [],
+         "power_consumption": 80,
+        "priority": 2
+    }, {
+        "id": 8,
+        "name": "p1_mongodbexpress",
+        "dependencies": [10],
+        "placements": [],
+        
+    }, {
+        "id": 9,
+        "name": "p1_cadvisor",
+        "dependencies": [],
+        "placements": [],
+        
+    }, {
+        "id": 10,
+        "name": "p1_mongodb",
+        "dependencies": [],
+        "placements": [],
+        
+    }, {
+        "id": 11,
+        "name": "p1_api",
+        "dependencies": [10],
+        "placements": [],
+         "power_consumption": 80,
+        "priority": 2
+    }, {
+        "id": 12,
+        "name": "p1_node-exporter",
+        "dependencies": [],
+        "placements": [],
+       
+    }],
+    "currentState": [0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2]
+}

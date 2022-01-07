@@ -1,0 +1,338 @@
+services:
+  api:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    environment:
+      DATABASE_URL: mongodb://admin:admin@mongodb:27017
+    image: iselabdearborn/docker-grocery-api
+    ports:
+    - 3000:3000
+  cbeapp:
+    depends_on:
+    - cbedb
+    - cbemq
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    environment:
+    - DBENGINE=postgresql
+    - DBHOST=cbedb
+    - DBNAME=cbe
+    - DBPASSWORD=super
+    - DBUSER=super
+    - MQHOST=cbemq
+    - MQUSER=super
+    - MQPASSWORD=super
+    - MQRESTSERVER=cbe.sphinx.co.nz
+    - MQRESTPORT=443
+    - MQRESTPROTOCOL=https
+    - SUNAME=super
+    - SUEMAIL=super@super.com
+    - SUPASS=super
+    image: semprini/cbe-utilities
+    ports:
+    - 8000:8000
+    restart: unless-stopped
+  cbedb:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    environment:
+      POSTGRES_DB: cbe
+      POSTGRES_PASSWORD: super
+      POSTGRES_USER: super
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+    - db-data:/var/lib/postgresql/data
+  cbedbadmin:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    environment:
+      PGADMIN_DEFAULT_EMAIL: super@super.com
+      PGADMIN_DEFAULT_PASSWORD: super
+    image: dpage/pgadmin4
+    links:
+    - cbedb
+    ports:
+    - 80
+    restart: unless-stopped
+  cbemq:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    environment:
+      RABBITMQ_DEFAULT_PASS: super
+      RABBITMQ_DEFAULT_USER: super
+      TCP_PORTS: 5672,5671
+    image: rabbitmq:3-management-alpine
+    ports:
+    - 8080:15672
+    - 5671
+    - 5672
+    restart: unless-stopped
+  creator:
+    depends_on:
+    - api
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    environment:
+      API_URL: http://api:3000/api
+    image: iselabdearborn/docker-grocery-creator
+  db:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  db2:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  db3:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  db4:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  db5:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  db6:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  db7:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  db8:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  grafana0:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: grafana/grafana
+  grafana1:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: grafana/grafana
+  grafana2:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: grafana/grafana
+  grafana3:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: grafana/grafana
+  grafana4:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: grafana/grafana
+  haproxy:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    environment:
+      MODE: tcp
+    expose:
+    - 5671
+    - 5672
+    - 8000
+    - 9000
+    image: dockercloud/haproxy:latest
+    links:
+    - cbemq
+    - cbeapp
+    - cbedbadmin
+    restart: unless-stopped
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  mongodb:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: webhippie/mongodb:latest
+  mongodb1:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: webhippie/mongodb:latest
+  nginx:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+    image: nginx
+  node:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+    image: node
+  rabbitmq:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+    image: rabbitmq
+  rabbitmq1:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+    image: rabbitmq
+  rabbitmq2:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+    image: rabbitmq
+  rabbitmq3:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+    image: rabbitmq
+  rabbitmq4:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: rabbitmq
+  rabbitmq5:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: rabbitmq
+  rabbitmq6:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: rabbitmq
+  redis:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  redis1:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  redis2:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  redis5:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: redis
+  redis7:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  redis8:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  redis9:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == manager
+    image: mongo
+  visualizer:
+    
+    image: dockersamples/visualizer:latest
+    ports:
+    - 8070:8080
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  wordpress2:
+    
+    image: wordpress
+  wordpress3:
+    
+    image: wordpress
+  wordpress4:
+    
+    image: wordpress
+  wordpress5:
+    
+    image: wordpress
+  wordpress6:
+   
+    image: wordpress
+  wordpress7:
+   
+    image: wordpress
+  wordpress8:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+    image: wordpress
+  wordpress9:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+    image: wordpress
+version: '3.8'
+volumes:
+  data-volume:
+    driver: local
+  db-data: null

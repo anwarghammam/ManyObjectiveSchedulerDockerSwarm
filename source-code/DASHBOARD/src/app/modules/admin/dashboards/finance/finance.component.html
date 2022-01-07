@@ -1,0 +1,297 @@
+<style>
+    .alert-toast {
+    -webkit-animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.alert-toast input:checked ~ * {
+    -webkit-animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+    @-webkit-keyframes slide-in-top{0%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes slide-in-top{0%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes slide-out-top{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}}@keyframes slide-out-top{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}}@-webkit-keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}@keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}@-webkit-keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@-webkit-keyframes fade-out-right{0%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}100%{-webkit-transform:translateX(50px);transform:translateX(50px);opacity:0}}@keyframes fade-out-right{0%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}100%{-webkit-transform:translateX(50px);transform:translateX(50px);opacity:0}}
+
+</style>
+<div class="flex items-center justify-center sm:col-span-1 flex flex-auto "
+    style=" margin-left:40px; margin-right:40px; margin-top:-100px">
+    <!-- Schedule 
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <p>
+                Choose
+                <b class="caret"></b>
+            </p>
+        </a>
+        <ul class="dropdown-menu">
+            <li  (click)="showNotification1('top','center')"><a href="#"> DEFAULT ALGO</a></li>
+            <li (click)="showNotification2('top','center')"><a href="#">SUGGESTED APPROACH</a></li>
+            
+        </ul>
+    </li>-->
+
+    <div
+        class="sm:col-span-12 md:col-span-12 lg:col-span-12 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+        <div *ngIf="click3==true"  class="alert-toast center" style=" width: 40%; align-self: center; "role="alert">
+            <input type="checkbox" class="hidden" id="footertoast">
+           
+            <label  class="flex close cursor-pointer flex items-start bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md" title="close" for="footertoast">
+                <p class="font-bold">Moving to our approach ! Please wait</p>
+            </label>
+          </div>
+        <div class="flex flex-col sm:flex-row items-start justify-between">
+            <div class="text-3xl font-bold tracking-tight leading-6 truncate"
+                style="color: #FFC22E; text-align: center;">Scheduling steps</div>
+            <div class="mt-3 sm:mt-0 sm:ml-2">
+
+            </div>
+        </div>
+        <div class=" flex flex-col mt-2 divide-y">
+
+
+
+
+
+
+            <ng-container>
+                <div class="flex flex-row items-center justify-between py-4 px-0.5">
+                    <div class="flex flex-col">
+                        <div class="font-medium">  <mat-icon *ngIf="click1==true">check_circle</mat-icon>  Objectives   </div>
+
+                    </div>
+                    <button mat-icon-button (click)="OpenInfo(0)">
+                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                    </button>
+                </div>
+
+                <div *ngIf="open[0]==1">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+
+                    <div class=" mat-elevation-z8 table-responsive">
+                        <mat-table #table [dataSource]="dataSource3">
+
+
+                            <ng-container matColumnDef="Objectives">
+                                <mat-header-cell *matHeaderCellDef> Objectives </mat-header-cell>
+                                <mat-cell *matCellDef="let objective ;let i = index"><input type="checkbox"
+                                        class="option-input radio" (click)="onSave(i)"><span class="label-text"
+                                        style="margin-left: 10px;">{{objective.name}}</span>
+
+
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Weight">
+                                <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+                                <mat-cell *matCellDef="let objective ; let i =index">
+
+                                    <input matInput type="number" [(ngModel)]="objectives[i][i]" min="0" max="1"
+                                        step="0.1" *ngIf="check[i]==true">
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns4"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns4;"></mat-row>
+                        </mat-table>
+                        <br>
+
+                        <div class="example-button-row" style="text-align: right; ">
+                            <button mat-raised-button (click)="savechanges()"
+                                style="margin-right:20px; background-color:#FFC22E;">Save</button>
+                        </div>
+                        <br>
+                    </div>
+
+
+                </div>
+            </ng-container>
+
+
+
+
+
+            <ng-container>
+
+                <div class="flex flex-row items-center justify-between py-4 px-0.5">
+                    <div class="flex flex-col">
+
+                        <div class="font-medium"> <mat-icon *ngIf="click2==true">check_circle</mat-icon>  Placement Constraints</div>
+
+                    </div>
+                    <button mat-icon-button (click)="OpenInfo(1)">
+                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                    </button>
+                </div>
+                <div *ngIf="open[1]==1">
+
+                    <div class="mat-elevation-z8">
+                        <mat-table #table [dataSource]="dataSource1">
+
+                            <ng-container matColumnDef="container">
+
+                                <mat-header-cell *matHeaderCellDef> container </mat-header-cell>
+                                <mat-cell *matCellDef="let con ">
+                                    <div class="flex items-center">
+                                        <div class="flex-0 w-2 h-2 rounded-full" [style.backgroundColor]="'#022441'">
+                                        </div>
+                                        <div class="ml-3 truncate">{{con.name}}
+                                        </div>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="{{Discol}}"
+                                *ngFor="let Discol of displayedColumns2 ; let i = index">
+                                <mat-header-cell *matHeaderCellDef>{{Discol}}</mat-header-cell>
+                                <mat-cell *matCellDef="let con ;let j = index">
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                            (change)="checkboxChanged(i,j)" [checked]="check1[j][i]">
+
+                                    </div>
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns3"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns3;"></mat-row>
+                        </mat-table>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+
+                        <br>
+
+                       
+                        <br>
+                    </div>
+                </div>
+
+
+            </ng-container>
+            <ng-container>
+                <div class="flex flex-row items-center justify-between py-4 px-0.5">
+                    <div class="flex flex-col">
+                        <div class="font-medium"> <mat-icon *ngIf="click2==true">check_circle</mat-icon> Power mode</div>
+
+                    </div>
+                    <button mat-icon-button (click)="OpenInfo(2)">
+                        <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                    </button>
+                </div>
+                <div *ngIf="open[2]==1">
+
+                    <div class="example-container mat-elevation-z8">
+                        <mat-table #table [dataSource]="dataSource">
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef> Node Name </mat-header-cell>
+                                <mat-cell *matCellDef="let node ">
+                                    <div class="flex items-center">
+                                        <div class="flex-0 w-2 h-2 rounded-full" [style.backgroundColor]="'#022441'">
+                                        </div>
+                                        <div class="ml-3 truncate">{{node.name}}
+                                        </div>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="max_power_consumption">
+                                <mat-header-cell *matHeaderCellDef> Max power consumption </mat-header-cell>
+                                <mat-cell *matCellDef="let node; let i = index ">
+
+                                    <input matInput [(ngModel)]="node.max_power_consumption" type="number" min="0"
+                                        max="1000" step="10">
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                        </mat-table>
+
+
+                    </div>
+                    <br>
+                    <br>
+
+                    <!-- power and priorities per container -->
+                    <div class="mat-elevation-z8">
+                        <mat-table #table [dataSource]="dataSource1">
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef> name </mat-header-cell>
+                                <mat-cell *matCellDef="let con">
+                                    <div class="flex items-center">
+                                        <div class="flex-0 w-2 h-2 rounded-full" [style.backgroundColor]="'#FFC22E'">
+                                        </div>
+                                        <div class="ml-3 truncate">{{con.name}}
+                                        </div>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- power consumption Column -->
+                            <ng-container matColumnDef="Power-consumption">
+                                <mat-header-cell *matHeaderCellDef> Power Consumption </mat-header-cell>
+                                <mat-cell *matCellDef="let con">
+
+
+                                    <input type="number" [(ngModel)]="con.power_consumption" min="1" max="1000"
+                                        step="1" />
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- priority Column -->
+                            <ng-container matColumnDef="priority">
+                                <mat-header-cell *matHeaderCellDef> Priority </mat-header-cell>
+                                <mat-cell *matCellDef="let con">
+                                    <input type="number" [(ngModel)]="con.priority" min="1" max="5" step="1" />
+
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns1;"></mat-row>
+                        </mat-table>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                        <br>
+                        <div class="example-button-row" style="text-align: right; ">
+                            <button mat-raised-button (click)="save()"
+                                style="margin-right:20px; background-color:#FFC22E; text-decoration-color: white;">Save</button>
+                        </div>
+                    </div>
+
+                   
+
+
+
+                </div>
+            </ng-container>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="reschedule==true"  style="text-align: right;">
+            <button (click)="showNotification2('top','center')"
+                class="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 fuse-mat-button-rounded inline-flex items-center" mat-flat-button>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                        clip-rule="evenodd"></path>
+                </svg> <span>Reschedule</span>
+            </button>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,329 @@
+services:
+  haproxy:
+     image: dockercloud/haproxy:latest
+     deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+     restart: unless-stopped
+     volumes:
+         - "/var/run/docker.sock:/var/run/docker.sock"
+     environment:
+         MODE: tcp
+     expose:
+         - 5671
+         - 5672
+         - 8000
+         - 9000
+     links:
+         - cbemq
+         - cbeapp
+         - cbedbadmin
+  cbeapp:
+     image: semprini/cbe-utilities
+     deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+     restart: unless-stopped
+     environment:
+         - DBENGINE=postgresql
+         - DBHOST=cbedb
+         - DBNAME=cbe
+         - DBPASSWORD=super
+         - DBUSER=super
+         - MQHOST=cbemq
+         - MQUSER=super
+         - MQPASSWORD=super
+         - MQRESTSERVER=cbe.sphinx.co.nz
+         - MQRESTPORT=443
+         - MQRESTPROTOCOL=https
+         - SUNAME=super
+         - SUEMAIL=super@super.com
+         - SUPASS=super
+     depends_on:
+          - cbedb
+          - cbemq
+     ports:
+        - "8000:8000"
+            
+  cbedb:
+  
+     image: postgres:latest
+     deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+     restart: unless-stopped
+     volumes:
+        - "db-data:/var/lib/postgresql/data"
+     environment:
+        POSTGRES_PASSWORD: super
+        POSTGRES_USER: super
+        POSTGRES_DB: cbe
+            
+  cbemq:
+     image: rabbitmq:3-management-alpine
+     deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+     restart: unless-stopped
+     environment:
+         RABBITMQ_DEFAULT_USER: super
+         RABBITMQ_DEFAULT_PASS: super
+         TCP_PORTS: "5672,5671"
+     ports:
+       - '8080:15672'
+       - 5671
+       - 5672
+
+  cbedbadmin:
+     image: dpage/pgadmin4
+     deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+     restart: unless-stopped
+     environment:
+          PGADMIN_DEFAULT_EMAIL: super@super.com
+          PGADMIN_DEFAULT_PASSWORD: super
+     ports:
+        - 80
+     links:
+        - cbedb
+  api:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+      
+    environment:
+      DATABASE_URL: mongodb://admin:admin@mongodb:27017
+    image: iselabdearborn/docker-grocery-api
+    ports:
+    - 3000:3000
+  creator:
+    depends_on:
+    - api
+    
+    environment:
+      API_URL: http://api:3000/api
+    image: iselabdearborn/docker-grocery-creator
+  
+  mongodb:
+   # image: mongo:4.4.2
+    image: webhippie/mongodb:latest
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+  mongodb:
+   # image: mongo:4.4.2
+    deploy:
+      placement:
+        constraints:
+        - node.hostname ==  worker1
+    image: webhippie/mongodb:latest
+    
+  mongodb1:
+    
+   # image: mongo:4.4.2
+    image: webhippie/mongodb:latest  
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+  wordpress2:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+  wordpress3:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+  wordpress4:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+  wordpress5:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+  wordpress6:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+  wordpress7:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+  wordpress8:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+  wordpress9:
+    image: wordpress
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+  rabbitmq:
+    
+    image: rabbitmq
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+  rabbitmq1:
+    
+    image: rabbitmq  
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+  rabbitmq2:
+    
+    image: rabbitmq 
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default   
+  rabbitmq3:
+  
+    
+    image: rabbitmq 
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1 
+  nginx:
+    image: nginx
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+  node:
+    image: node
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+  redis5:
+    image: redis
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+  redis:
+    image: redis
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker2
+     
+  redis9:
+    
+    image: mongo
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == worker1
+  redis1:
+    image: mongo 
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == default
+  redis2:
+    image: mongo  
+  db:
+    image: mongo
+  db2:
+    image: mongo
+    
+  db3:
+    image: mongo 
+  db4:
+    image: mongo
+  db5:
+    image: mongo
+  db6:
+    image: mongo
+    
+  db7:
+    image: mongo 
+  db8:
+    image: mongo  
+  rabbitmq4:                       
+                                   
+    image: rabbitmq
+  rabbitmq6:                       
+                                   
+    image: rabbitmq                    
+                                       
+  redis7:                               
+                                       
+    image: mongo                     
+                                       
+  redis8:                               
+                                       
+    image: mongo   
+  rabbitmq5:                       
+                                   
+    image: rabbitmq                    
+                                       
+  redis9:                               
+                                       
+    image: mongo                     
+                                       
+  redis:                               
+                                       
+    image: mongo  
+  grafana0:
+     image: grafana/grafana
+  grafana1:
+     image: grafana/grafana
+     
+  grafana2:
+     image: grafana/grafana
+  grafana3:
+     image: grafana/grafana
+  grafana4:
+     image: grafana/grafana
+  visualizer:
+    image: dockersamples/visualizer:latest
+    ports:
+    - 8070:8080
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  
+version: '3.8'
+volumes:
+  db-data:
+  data-volume:
+    driver: local
+

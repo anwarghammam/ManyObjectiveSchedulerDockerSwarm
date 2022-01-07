@@ -1,0 +1,205 @@
+services:
+  haproxy:
+     image: dockercloud/haproxy:latest
+     restart: unless-stopped
+     volumes:
+         - "/var/run/docker.sock:/var/run/docker.sock"
+     environment:
+         MODE: tcp
+     expose:
+         - 5671
+         - 5672
+         - 8000
+         - 9000
+     links:
+         - cbeapp
+         - cbedbadmin
+  cbeapp:
+     image: semprini/cbe-utilities
+     restart: unless-stopped
+     environment:
+         - DBENGINE=postgresql
+         - DBHOST=cbedb
+         - DBNAME=cbe
+         - DBPASSWORD=super
+         - DBUSER=super
+         - MQHOST=cbemq
+         - MQUSER=super
+         - MQPASSWORD=super
+         - MQRESTSERVER=cbe.sphinx.co.nz
+         - MQRESTPORT=443
+         - MQRESTPROTOCOL=https
+         - SUNAME=super
+         - SUEMAIL=super@super.com
+         - SUPASS=super
+     depends_on:
+          - cbedb
+     ports:
+        - "8000:8000"
+            
+  cbedb:
+     image: postgres:latest
+     restart: unless-stopped
+     volumes:
+        - "db-data:/var/lib/postgresql/data"
+     environment:
+        POSTGRES_PASSWORD: super
+        POSTGRES_USER: super
+        POSTGRES_DB: cbe
+            
+
+  cbedbadmin:
+     image: dpage/pgadmin4
+     restart: unless-stopped
+     environment:
+          PGADMIN_DEFAULT_EMAIL: super@super.com
+          PGADMIN_DEFAULT_PASSWORD: super
+     ports:
+        - 80
+     links:
+        - cbedb
+  api:
+    deploy:
+      
+    environment:
+      DATABASE_URL: mongodb://admin:admin@mongodb:27017
+    image: iselabdearborn/docker-grocery-api
+    ports:
+    - 3000:3000
+  creator:
+    depends_on:
+    - api
+    
+    environment:
+      API_URL: http://api:3000/api
+    image: iselabdearborn/docker-grocery-creator
+  
+  mongodb:
+   # image: mongo:4.4.2
+    image: webhippie/mongodb:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+  mongodb11:
+    image: mongo:4.4.2
+    #image: webhippie/mongodb:latest
+    
+  mongodb1:
+    image: mongo:4.4.2
+    #image: webhippie/mongodb:latest  
+  wordpress2:
+    image: wordpress:latest
+  wordpress3:
+    image: wordpress:latest
+  wordpress4:
+    image: wordpress:latest
+  wordpress5:
+    image: wordpress:latest
+  wordpress6:
+    image: wordpress:latest
+  wordpress7:
+    image: wordpress:latest
+  wordpress8:
+    image: wordpress:latest
+  wordpress9:
+    image: wordpress:latest
+  rabbitmq9:
+    
+    image: rabbitmq:latest
+  rabbitmq1:
+    
+    image: rabbitmq:latest
+  rabbitmq2:
+    
+    image: rabbitmq:latest  
+  rabbitmq3:
+    
+    image: rabbitmq:latest 
+  nginx:
+    image: nginx:latest
+  
+  db:
+    image: mongo:latest
+  db2:
+    image: mongo:latest
+    
+  db3:
+    image: mongo:latest
+  db4:
+    image: mongo:latest
+  db5:
+    image: mongo:latest
+  db6:
+    image: mongo:latest
+    
+  db7:
+    image: mongo:latest
+  visualizer:
+  
+    image: dockersamples/visualizer:latest
+  db8:
+    image: mongo:latest 
+  rabbitmq4:                       
+                                   
+    image: rabbitmq:latest
+  rabbitmq6:                       
+                                   
+    image: rabbitmq:latest     
+  rabbitmq:                       
+                                   
+    image: rabbitmq:latest     
+  redis5:
+    image: redis:latest
+    
+  redis6:
+    image: redis:latest
+  redis10:
+    image: redis:latest
+  redis:
+    image: redis:latest
+     
+  redis9:
+    
+    image: mongo:latest
+  redis1:
+    image: mongo:latest
+  redis2:
+    image: mongo:latest                                      
+  redis7:                               
+                                       
+    image: mongo:latest                    
+                                       
+  redis8:                               
+                                       
+    image: mongo:latest   
+  rabbitmq5:                       
+                                   
+    image: rabbitmq:latest                    
+                                       
+  redis13:                                                        
+    image: mongo:latest  
+  grafana0:
+     image: grafana/grafana
+  grafana1:
+     image: grafana/grafana
+     
+  grafana2:
+     image: grafana/grafana
+  grafana3:
+     image: grafana/grafana
+  grafana4:
+     image: grafana/grafana
+
+version: '3.8'
+volumes:
+  db-data:
+  data-volume:
+    driver: local
+

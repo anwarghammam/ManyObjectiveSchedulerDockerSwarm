@@ -1,0 +1,59 @@
+services:
+  
+
+  db:
+    image: mongo
+  db2:
+    image: mongo
+    
+  db3:
+    image: mongo 
+  db4:
+    image: mongo
+  db5:
+    image: mongo
+  db6:
+    image: mongo
+    
+  db7:
+    image: mongo 
+  db8:
+    image: mongo  
+  rabbitmq4:                       
+                                   
+    image: rabbitmq
+  rabbitmq6:                       
+                                   
+    image: rabbitmq                    
+                                       
+  redis7:                               
+                                       
+    image: mongo                     
+                                       
+  redis8:                               
+                                       
+    image: mongo   
+  rabbitmq5:                       
+                                   
+    image: rabbitmq                    
+                                       
+  redis9:                               
+                                       
+    image: mongo                     
+                                       
+  redis:                               
+                                       
+    image: mongo  
+  grafana0:
+     image: grafana/grafana
+  grafana1:
+     image: grafana/grafana
+     
+
+  
+version: '3.8'
+volumes:
+  db-data:
+  data-volume:
+    driver: local
+

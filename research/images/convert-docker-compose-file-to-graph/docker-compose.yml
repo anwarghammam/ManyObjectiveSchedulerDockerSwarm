@@ -1,0 +1,18 @@
+services:
+    haproxy:
+        links:
+            - cbemq
+            - cbeapp
+            - cbedbadmin
+    cbeapp:
+        depends_on:
+            - cbedb
+            - cbemq
+    cbedb:
+        image: postgres:latest
+    cbemq:
+        image: rabbitmq:3-management-alpine
+    cbedbadmin:
+        image: dpage/pgadmin4
+        links:
+            - cbedb

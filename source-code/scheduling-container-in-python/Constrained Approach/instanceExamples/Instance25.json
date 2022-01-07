@@ -1,0 +1,44 @@
+{"nodes": [{"id": 0, "cluster_id": "gk94vbxl8kq5mw8jln0p52d3l", "name": "default", "activated": true, "max_power_consumption": 1000, "Maxmem": 2500.252864}, {"id": 1, "cluster_id": "wl5o54qlu608muoc52xfsvkv7", "name": "worker1", "activated": true, "max_power_consumption": 1000, "Maxmem": 700.252864},
+ {"id": 2, "cluster_id": "tesd3xeryphjyppytzbeji09u", "name": "worker2", "activated": true, "max_power_consumption": 1000, "Maxmem": 700.252864}], "currentState": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], 
+"containers": [
+
+{"id": 0, "name": "p_redis6.1.84mkxj9hki0o4q5aaxflb8sfv", "image": "redis:latest", "dependencies": [1], "placements": [], "priority": 4, "average_power_consumption_per_minute": 31.833333333333332, "power_consumption": 50, "cpu_usage": 0.16, "mem_usage": 63.3984375},
+ 
+{"id": 1, "name": "p_cbedb.1.4ad51biuu3fnggmnvmdb1qyel", "image": "postgres:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 27.166666666666668, "power_consumption": 50, "cpu_usage": 0.16, "mem_usage": 63.3984375}, 
+
+{"id": 2, "name": "p_wordpress6.1.vmz4nxsf55l910nbn1kbbqzg2", "image": "wordpress:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 24.0, "power_consumption": 50, "cpu_usage": 0.016, "mem_usage": 63.3984375},
+
+ {"id": 3, "name": "p_grafana1.1.n8zy8qur5xaw0hv8zjkiph8pk", "image": "grafana/grafana:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 24.5, "power_consumption": 50, "cpu_usage": 0.16, "mem_usage": 63.3984375},
+ 
+  {"id": 4, "name": "p_mongodb1.1.rdeea25jjmu5l6y27srz5lv4z", "image": "webhippie/mongodb:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 24.333333333333332, "power_consumption": 50, "cpu_usage": 0.16, "mem_usage": 33.3984375}, 
+  {"id": 5, "name": "p_rabbitmq4.1.03a70m75j70f3w8fuejkqas2q", "image": "rabbitmq:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 15.166666666666666, "power_consumption": 50, "cpu_usage": 0.16, "mem_usage": 33.3984375}, 
+  {"id": 6, "name": "p_db5.1.f9q4xc28ivfi9mkzlrvgin5ds", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 28.5, "power_consumption": 50, "cpu_usage": 0.016, "mem_usage": 63.3984375}, 
+  {"id": 7, "name": "p_redis.1.wj49csiset0xvqv27xh2c0mx7", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 29.333333333333332, "power_consumption": 50, "cpu_usage": 0.16, "mem_usage": 63.3984375},
+  
+   {"id": 8, "name": "p_db7.1.lo87t5k5q8e3sgt8xg3javwbe", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 21.0, "power_consumption": 50, "cpu_usage": 0.16, "mem_usage": 63.3984375}, 
+   
+   {"id": 9, "name": "p_redis8.1.7k8qb0n97qla8v0rwhkpx97mu", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 20.166666666666668, "power_consumption": 50, "cpu_usage": 0.4, "mem_usage": 33.3984375},
+   
+    {"id": 10, "name": "p_redis2.1.ep2unmb1yp3r6hggfrmpezl59", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 16.833333333333332, "power_consumption": 50, "cpu_usage": 0.4, "mem_usage": 45},
+    
+     {"id": 11, "name": "p_visualizer.1.j6ijstnxk7ch5kmwuymzw5zzy", "image": "dockersamples/visualizer:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 17.0, "power_consumption": 50, "cpu_usage": 2.14109452666673405, "mem_usage": 45}, 
+     {"id": 12, "name": "p_rabbitmq5.1.aobyvl8e0ve90gvfib6ex9ogb", "image": "rabbitmq:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 23.833333333333332, "power_consumption": 50, "cpu_usage": 4.14109452666673405, "mem_usage": 45}, 
+     
+     {"id": 13, "name": "p_wordpress4.1.a4nyfrotvjol87prx0b4lntq9", "image": "wordpress:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 28.0, "power_consumption": 50, "cpu_usage": 5.04109452666673405, "mem_usage": 55},
+     
+      {"id": 14, "name": "p_redis7.1.h7j58f5kdmgu7t7r8xjt1f9vn", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 26.5, "power_consumption": 50, "cpu_usage": 5.04109452666673405, "mem_usage": 36}, 
+      
+      {"id": 15, "name": "p_redis5.1.w4jd4jg5awnqc84oi9cjsju4i", "image": "redis:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 22.666666666666668, "power_consumption": 50, "cpu_usage": 4.14109452666673405, "mem_usage": 41},
+      
+  {"id": 16, "name": "p_redis21", "image": "redis:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 31.833333333333332, "power_consumption": 50, "cpu_usage": 0.14109452666673405, "mem_usage": 43.3984375}, 
+{"id": 17, "name": "p_cbedb.1.4ad51biuu3fnggmnvmdb1qyel", "image": "postgres:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 27.166666666666668, "power_consumption": 50, "cpu_usage": 0.14109452666673405, "mem_usage": 43.3984375}, 
+{"id": 18, "name": "p_wordpress6.1.vmz4nxsf55l910nbn1kbbqzg2", "image": "wordpress:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 24.0, "power_consumption": 50, "cpu_usage": 0.14109452666673405, "mem_usage": 63.3984375},
+ {"id": 19, "name": "p_grafana1.1.n8zy8qur5xaw0hv8zjkiph8pk", "image": "grafana/grafana:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 24.5, "power_consumption": 50, "cpu_usage": 4.14109452666673405, "mem_usage": 63.3984375},
+  {"id": 20, "name": "p_mongodb1.1.rdeea25jjmu5l6y27srz5lv4z", "image": "webhippie/mongodb:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 24.333333333333332, "power_consumption": 50, "cpu_usage": 4.14109452666673405, "mem_usage": 43.3984375}, 
+  {"id": 21, "name": "p_rabbitmq4.1.03a70m75j70f3w8fuejkqas2q", "image": "rabbitmq:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 15.166666666666666, "power_consumption": 50, "cpu_usage": 4.14109452666673405, "mem_usage": 63.3984375}, 
+  {"id": 22, "name": "p_db5.1.f9q4xc28ivfi9mkzlrvgin5ds", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 28.5, "power_consumption": 50, "cpu_usage": 0.14109452666673405, "mem_usage": 3.3984375}, 
+  
+  {"id": 23, "name": "p_redis.1.wj49csiset0xvqv27xh2c0mx7", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 29.333333333333332, "power_consumption": 50, "cpu_usage": 0.04109452666673405, "mem_usage": 33.3984375},
+   {"id": 24, "name": "p_db7.1.lo87t5k5q8e3sgt8xg3javwbe", "image": "mongo:latest", "dependencies": [], "placements": [], "priority": 4, "average_power_consumption_per_minute": 21.0, "power_consumption": 50, "cpu_usage": 0.14109452666673405, "mem_usage": 63.3984375}
+            ],
+                         "objectives":  [{"0": 0.25}, {"3": 0.25},{"6": 0.25}, {"7": 0.25}, {"8": 0}]}
