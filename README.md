@@ -33,7 +33,7 @@ Now we have to install some services for Docker Swarm monitoring in the manager 
     
 ## Install
 ```bash
-$ git clone https://github.com/anwarghammam/docker-swarm-monitoring-arm64
+$ git clone https://github.com/anwarghammam/docker-swarm-monitoring-arm64 // if the rasberry pies work with arm-architecture, but if it is amd clone the following https://github.com/anwarghammam/Monitoring-Docker-Swarm
 $ cd docker-swarm-monitoring-arm64/
 $ docker stack deploy --compose-file docker-compose.yml p
 ```
