@@ -95,11 +95,8 @@ And now everything is ready! you can test the demo in the dashboard.
 <br>
 Before running the app, there are some changes that you have to do since you are using your own docker machines.
 <br> </br>
-Please go to <strong> src/app/home/chart.js </strong> and replace the variable <strong> url </strong> with "http://manager-ip-address:9090".
+Please go to <strong>source-code/DASHBOARD/src/api.service.ts</strong> and replace the variable <strong> url </strong> with "http://manager-ip-address:9090".
  <br> </br>   
-Also, please go to <strong> src/app/api.service.ts </strong> and replace the variable <strong> url </strong> with "http://manager-ip-address:9090" 
-
- <br/><br/>
  
  this changes has to be autoamtically coded from our side, but because of deadlines, we modify the values manually. For sure, we can do it later.
 Now, open a terminal on the dashboard project and run the following command:
