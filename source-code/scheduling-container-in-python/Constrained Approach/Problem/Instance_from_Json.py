@@ -14,12 +14,10 @@ from instance.Instance import Instance
 import extract_data 
 
 
-
-
 def createInstance(Instance):
     
     
-    extract_data.GetAllData()
+    
     
 
     

@@ -57,6 +57,7 @@
                        "src/app/modules/admin/dashboards/project/chart.js",
                        "node_modules/chartist/dist/chartist.js",
                        "node_modules/chart.js/dist/Chart.js"
+                       
                      
                         ]
                     },

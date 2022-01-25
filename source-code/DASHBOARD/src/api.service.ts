@@ -10,7 +10,7 @@ import 'rxjs/Rx';
 })
 
 export class ApiService implements OnInit{
- url="http://192.168.99.110:9090/"
+ url="http://192.168.99.111:9090/"
  all_current_data
  eliminate_services=['p_node-exporter','p_cadvisor','p_prometheus','p_grafana']
  public dataSubject = new Subject<number>();
@@ -133,7 +133,11 @@ energy():Observable<HttpResponse<any>>{
   }
 
   
-
+  public geturl(entity:any):Observable<any>{
+    return this.http.post<JSON>("http://localhost:5002/geturl/",JSON.stringify(entity))
+   
+    
+  }
  
 
 

@@ -198,12 +198,12 @@ class Data:
             yaml.dump(compose,file1)
 
 
-        cmd = ("docker-machine scp localhost:"+str(file)+"  docker@manager:. ").split()
+        cmd = ("docker-machine scp localhost:"+str(file)+"  docker@"+str(machines[0].name)+":. ").split()
 
         p = subprocess.Popen(cmd)
         output, errors = p.communicate()
 
-        cmd = ('docker-machine ssh manager docker stack deploy -c updated-docker-compose.yml p ').split()
+        cmd = ('docker-machine ssh '+str(machines[0].name)+' docker stack deploy -c updated-docker-compose.yml p ').split()
 
         p = subprocess.Popen(cmd)
         output, errors = p.communicate()
@@ -422,3 +422,5 @@ def GetAllData():
     print(dependencies)
     #print(data.get_constraints(machines, roles, images))
     data.createjson(machines,containers,initial_state,images,dependencies,[[] for i in range(len(containers))],roles)
+    
+

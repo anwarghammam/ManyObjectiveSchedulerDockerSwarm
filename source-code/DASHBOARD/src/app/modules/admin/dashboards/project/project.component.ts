@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ApexOptions } from 'ng-apexcharts';
 import { ProjectService } from 'app/modules/admin/dashboards/project/project.service';
 import { ApiService } from 'api.service';
-
+ 
 
 import { ConditionalExpr } from '@angular/compiler';
 import Chart from 'chart.js';
@@ -27,6 +27,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     containers_info = []
     nodes_idsV = []
     containers = []
+    url
     data1V = []
     color
     StatusMsg=''
@@ -179,7 +180,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     ) {
 
          
-
+        
 
 
         this.api.updateStatus()
@@ -187,23 +188,23 @@ export class ProjectComponent implements OnInit, OnDestroy {
             resp => {
                 this.StatusMsg=resp.body
                 console.log(this.StatusMsg)
-                var color = Math.floor((Math.random() * 4) + 1);
-                if (this.StatusMsg==="done"){
+               // var color = Math.floor((Math.random() * 4) + 1);
+               // if (this.StatusMsg==="done"){
 
-                }
-                else{
-                    $.notify({
+                //}
+               // else{
+                //    $.notify({
 
-                        message: String(this.StatusMsg)
-                    }, {
-                        type: 'info',
-                        timer: 1000,
-                        placement: {
-                            from: 'left',
-                            align: 'center'
-                        }
-                    });
-                }
+                     //   message: String(this.StatusMsg)
+                   // }, {
+                     //   type: 'info',
+                     //   timer: 1000,
+                       // placement: {
+                       //     from: 'left',
+                       //     align: 'center'
+                     //   }
+                  //  });
+               // }
                 
                 
 
@@ -240,8 +241,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
      */
 
     ngOnInit(): void {
+        
+        this.api.geturl(this.api.url)
+            .subscribe(resp => {
 
-       
+               console.log(resp)
+            });
        
             this.api.getmem()
             .subscribe(resp => {
@@ -369,7 +374,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
 
         setTimeout(() => {
-            all();
+           
+            all(String(this.api.url));
 
         }, 5);
 
