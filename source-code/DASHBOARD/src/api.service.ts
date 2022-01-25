@@ -10,7 +10,7 @@ import 'rxjs/Rx';
 })
 
 export class ApiService implements OnInit{
- url="http://192.168.99.111:9090/"
+ url="http://192.168.99.115:9090/"
  all_current_data
  eliminate_services=['p_node-exporter','p_cadvisor','p_prometheus','p_grafana']
  public dataSubject = new Subject<number>();
@@ -31,22 +31,22 @@ export class ApiService implements OnInit{
   
 
  default():Observable<HttpResponse<any>>{
-   return this.http.get<any>("https://containerscheduler.herokuapp.com/default", { observe: 'response' });
+   return this.http.get<any>("http://localhost:5002/default", { observe: 'response' });
  }
  exectime():Observable<HttpResponse<any>>{
-  return this.http.get<any>("https://containerscheduler.herokuapp.com/getexectime/", { observe: 'response' });
+  return this.http.get<any>("http://localhost:5002/getexectime/", { observe: 'response' });
 }
  newapproach():Observable<HttpResponse<any>>{
-   return this.http.get<any>("https://containerscheduler.herokuapp.com/newapproach/", { observe: 'response' });
+   return this.http.get<any>("http://localhost:5002/newapproach/", { observe: 'response' });
  }
  getcpu():Observable<HttpResponse<any>>{
-  return this.http.get<any>("https://containerscheduler.herokuapp.com/getcpu/", { observe: 'response' });
+  return this.http.get<any>("http://localhost:5002/getcpu/", { observe: 'response' });
 }
 getmem():Observable<HttpResponse<any>>{
   return this.http.get<any>("http://localhost:5002/getmem/", { observe: 'response' });
 }
 getTotalMem():Observable<HttpResponse<any>>{
-  return this.http.get<any>("https://containerscheduler.herokuapp.com/getMaxmem/", { observe: 'response' });
+  return this.http.get<any>("http://localhost:5002/getMaxmem/", { observe: 'response' });
 }
  getnb_nodes()
  {
@@ -105,29 +105,29 @@ getTotalMem():Observable<HttpResponse<any>>{
    }
 
    get_constraints():Observable<HttpResponse<any>>{
-    return this.http.get<any>("https://containerscheduler.herokuapp.com/getjson/", { observe: 'response' });
+    return this.http.get<any>("http://localhost:5002/getjson/", { observe: 'response' });
   }
   updateStatus():Observable<HttpResponse<any>>{
-    return this.http.get<any>("https://containerscheduler.herokuapp.com/UpdateStatus/", { observe: 'response' });
+    return this.http.get<any>("http://localhost:5002/UpdateStatus/", { observe: 'response' });
   }
 
  public update_constraints(entity:any):Observable<any>{
-    return this.http.post<JSON>("https://containerscheduler.herokuapp.com/update/",JSON.stringify(entity))
+    return this.http.post<JSON>("http://localhost:5002/update/",JSON.stringify(entity))
    
     
   }
 energy():Observable<HttpResponse<any>>{
-    return this.http.get<any>("https://containerscheduler.herokuapp.com/getenergy/", { observe: 'response' });
+    return this.http.get<any>("http://localhost:5002/getenergy/", { observe: 'response' });
   }
 
   public weights(entity:any):Observable<any>{
-    return this.http.post<JSON>("https://containerscheduler.herokuapp.com/getweights/",JSON.stringify(entity))
+    return this.http.post<JSON>("http://localhost:5002/getweights/",JSON.stringify(entity))
    
     
   }
 
   public Status(entity:any):Observable<any>{
-    return this.http.post<JSON>("https://containerscheduler.herokuapp.com/getStatus/",JSON.stringify(entity))
+    return this.http.post<JSON>("http://localhost:5002/getStatus/",JSON.stringify(entity))
    
     
   }
