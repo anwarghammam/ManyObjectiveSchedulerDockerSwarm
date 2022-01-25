@@ -1,0 +1,79 @@
+services:
+  
+  wordpress2:
+    image: wordpress
+  wordpress3:
+    image: wordpress
+  wordpress4:
+    image: wordpress
+  wordpress5:
+    image: wordpress
+  wordpress6:
+    image: wordpress
+  wordpress7:
+    image: wordpress
+  wordpress8:
+    image: wordpress
+  wordpress9:
+    image: wordpress
+  rabbitmq9:
+    
+    image: rabbitmq
+  rabbitmq1:
+    
+    image: rabbitmq
+  rabbitmq2:
+    
+    image: rabbitmq
+  rabbitmq3:
+    
+    image: rabbitmq
+  nginx:
+    image: nginx
+  
+  
+  rabbitmq4:                       
+                                   
+    image: rabbitmq
+  rabbitmq6:                       
+                                   
+    image: rabbitmq 
+  rabbitmq:                       
+                                   
+    image: rabbitmq 
+  redis5:
+    image: redis    
+  redis6:
+    image: redis  
+  redis10:
+    image: redis
+  redis:
+    image: redis
+     
+  redis9:
+    
+    image: mongo
+  redis1:
+    image: mongo
+  redis2:
+    image: mongo                                      
+  redis7:                               
+                                       
+    image: mongo                   
+                                       
+  redis8:                               
+                                       
+    image: mongo   
+  rabbitmq5:                       
+                                   
+    image: rabbitmq                
+                                       
+  redis13:                                                        
+    image: mongo
+ 
+version: '3.8'
+volumes:
+  db-data:
+  data-volume:
+    driver: local
+
