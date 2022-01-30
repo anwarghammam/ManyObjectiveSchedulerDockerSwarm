@@ -25,6 +25,7 @@ class Data:
 
 
             cmd = ('docker-machine ssh manager docker node ls').split()
+            #cmd = (' ssh pi@node-01 docker node ls').split()
 
             p = subprocess.Popen(cmd,stdout=file)
             output, errors = p.communicate()
@@ -44,19 +45,9 @@ class Data:
         del machines[0]
         return machines
     def get_nodes_Id(self):
-
+        machines=self.get_nodes()
         machines_ids=[]
-
-        with  open(r"./test3.txt",'w') as file :
-
-
-            cmd = ('docker-machine ssh manager docker node ls').split()
-
-            p = subprocess.Popen(cmd,stdout=file)
-            output, errors = p.communicate()
-            
-
-
+        roles=[]
         with open(r"./test3.txt",'r') as file:
 
 
@@ -87,6 +78,7 @@ class Data:
             with  open(r"./test3.txt",'w') as file :
                 
                 cmd = ('docker-machine ssh '+str(machine)+' docker ps ').split()
+                #cmd = ('ssh pi@'+str(machine)+' docker ps ').split()
 
                 p = subprocess.Popen(cmd,stdout=file)
                 output, errors = p.communicate()
@@ -197,6 +189,12 @@ class Data:
 
             yaml.dump(compose,file1)
 
+        # cmd = ("scp -r " +str(file) + " pi@"+str(machines[0].name)+":. ").split()
+
+        # p = subprocess.Popen(cmd)
+        # output, errors = p.communicate()
+
+        #cmd = ('ssh pi@'+str(machines[0].name)+' docker stack deploy -c updated-docker-compose.yml p ').split()
 
         cmd = ("docker-machine scp localhost:"+str(file)+"  docker@"+str(machines[0].name)+":. ").split()
 

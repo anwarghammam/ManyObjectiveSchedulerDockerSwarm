@@ -1,9 +1,6 @@
 services:
   api:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
+    deploy: null
     environment:
       DATABASE_URL: mongodb://admin:admin@mongodb:27017
     image: iselabdearborn/docker-grocery-api
@@ -12,10 +9,6 @@ services:
   cbeapp:
     depends_on:
     - cbedb
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     environment:
     - DBENGINE=postgresql
     - DBHOST=cbedb
@@ -36,10 +29,6 @@ services:
     - 8000:8000
     restart: unless-stopped
   cbedb:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     environment:
       POSTGRES_DB: cbe
       POSTGRES_PASSWORD: super
@@ -49,10 +38,6 @@ services:
     volumes:
     - db-data:/var/lib/postgresql/data
   cbedbadmin:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     environment:
       PGADMIN_DEFAULT_EMAIL: super@super.com
       PGADMIN_DEFAULT_PASSWORD: super
@@ -65,88 +50,36 @@ services:
   creator:
     depends_on:
     - api
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     environment:
       API_URL: http://api:3000/api
     image: iselabdearborn/docker-grocery-creator
   db:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: mongo:latest
   db2:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: mongo:latest
   db3:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: mongo:latest
   db4:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: mongo:latest
   db5:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: mongo:latest
   db6:
     image: mongo:latest
   db7:
     image: mongo:latest
   db8:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: mongo:latest
   grafana0:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: grafana/grafana
   grafana1:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: grafana/grafana
   grafana2:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: grafana/grafana
   grafana3:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: grafana/grafana
   grafana4:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: grafana/grafana
   haproxy:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     environment:
       MODE: tcp
     expose:
@@ -163,9 +96,9 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
   mongodb:
     deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     environment:
       MONGO_INITDB_ROOT_PASSWORD: admin
       MONGO_INITDB_ROOT_USERNAME: admin
@@ -173,168 +106,64 @@ services:
     ports:
     - 27017:27017
   mongodb1:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: mongo:4.4.2
   mongodb11:
     image: mongo:4.4.2
   nginx:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: nginx:latest
   rabbitmq:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: rabbitmq:latest
   rabbitmq1:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: rabbitmq:latest
   rabbitmq2:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: rabbitmq:latest
   rabbitmq3:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: rabbitmq:latest
   rabbitmq4:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: rabbitmq:latest
   rabbitmq5:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: rabbitmq:latest
   rabbitmq6:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: rabbitmq:latest
   rabbitmq9:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: rabbitmq:latest
   redis:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: redis:latest
   redis1:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: mongo:latest
   redis10:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: redis:latest
   redis13:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: mongo:latest
   redis2:
     image: mongo:latest
   redis5:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: redis:latest
   redis6:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: redis:latest
   redis7:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: mongo:latest
   redis8:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: mongo:latest
   redis9:
     image: mongo:latest
   visualizer:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker2
     image: dockersamples/visualizer:latest
   wordpress2:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: wordpress:latest
   wordpress3:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: wordpress:latest
   wordpress4:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == worker1
     image: wordpress:latest
   wordpress5:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: wordpress:latest
   wordpress6:
     image: wordpress:latest
   wordpress7:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: wordpress:latest
   wordpress8:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: wordpress:latest
   wordpress9:
-    deploy:
-      placement:
-        constraints:
-        - node.hostname == manager
     image: wordpress:latest
 version: '3.8'
 volumes:
