@@ -20,11 +20,15 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 from instance.Instance import Instance
 from Problem.Instance_from_Json import createInstance
 
-
 instance=Instance()
 Instance=createInstance(instance)
-print(Instance.nodes[0].name)
-url='http://192.168.99.110:9090/'
+url=''
+master=''
+
+for node in Instance.nodes:
+    if node.Status=="Leader":
+        master=node.name
+
 
 @app.route('/getjson/', methods=['GET'])
 def getjson():
@@ -49,10 +53,34 @@ def getcsv():
     return response
 
 
+# @app.route('/geturl/', methods=['GET'])
+# def geturl():
+    
+
+    
+#     response = app.response_class(
+#         response=json.dumps(url),
+#         mimetype='application/json'
+#     )
+#     return response
+
+@app.route('/geturl/', methods=['POST'])
+def geturl():
+    
+    content = request.get_data()
+    c=json.loads(content)
+    
+    print('content',str(c))
+    global url
+    url=str(c)
+    
+    return 'url posted'
+
+
 @app.route('/update/', methods=['POST'])
+
 def events():
-
-
+    
     content = request.get_data()
     c=json.loads(content)
     #print(c)
@@ -83,18 +111,19 @@ def getStatus():
     
    
 def update(result):
+    
     with open(r"./instanceExamples/data.json", "r") as file:
         data= json.load(file)
     for row in result:
         for node in data['nodes']:
             if(node['name']==row[0]):
-                print(node['name'])
-                print(row[2])
+                
                 node['Manager Status']=row[2]
                 if(row[2]=='Reachable'):
                     
                     #cmd = ('docker-machine ssh manager docker node promote '+str(node['name'])).split()
-                    cmd = ('ssh root@'+str(Instance.nodes[0].name)+' docker node promote '+str(node['name'])).split()
+                    #cmd = ('docker-machine ssh '+str(Instance.nodes[0].name)+' docker node promote '+str(node['name'])).split()
+                    cmd = ('docker-machine ssh '+str(master)+' docker node promote '+str(node['name'])).split()
                     
                     print(cmd)
                     p = subprocess.Popen(cmd)
@@ -125,12 +154,13 @@ def weights():
 def get_nodes():
 
         machines=[]
-
+        print(master)
         with  open(r"./test3.txt",'w') as file :
 
 
             #cmd = ('docker-machine ssh manager docker node ls').split()
-            cmd = ('ssh root@'+str(Instance.nodes[0].name)+ ' docker node ls').split()
+            cmd = ('docker-machine ssh '+str(master)+ ' docker node ls').split()
+            #cmd = ('ssh pi@'+str(master)+ ' docker node ls').split()
 
             p = subprocess.Popen(cmd,stdout=file)
             output, errors = p.communicate()
@@ -150,14 +180,41 @@ def get_nodes():
 
             del machines[0]
             print(info)
+            del(info[0])
+            
+            for i,node_info in enumerate(info):
+                print(node_info[2])
+                
+                if (node_info[2]=='Down'):
+                    print(node_info)
+                    with open(r"./instanceExamples/data.json", "r") as file:
+                        data= json.load(file)
+                        data['nodes'][i]['activated']="false"
+                    with open(r"./instanceExamples/data.json", "w") as file:
+                        json.dump(data, file)
+                if (node_info[2]=='Ready' and Instance.nodes[i].activated=='false'):
+                    print(node_info)
+                    with open(r"./instanceExamples/data.json", "r") as file:
+                        data= json.load(file)
+                        data['nodes'][i]['activated']="true"
+                    with open(r"./instanceExamples/data.json", "w") as file:
+                        json.dump(data, file)
+                        
+                
             if (info[1][4]=='Unreachable'):
                
                 msg="Leader is down, another manager has been selected!"
+                with open(r"./instanceExamples/data.json", "r") as file:
+                    data= json.load(file)
+                    data['nodes'][0]['activated']="false"
+                with open(r"./instanceExamples/data.json", "w") as file:
+                    json.dump(data, file)
+                
                
                 return(jsonify(msg))
             else:
                 #print(groupe)
-                msg="done"
+                msg=""
                 #print(msg)
                 return(jsonify(msg))
 
@@ -165,7 +222,11 @@ def get_nodes():
 
 @app.route('/default/', methods=['GET'])
 def get():
-    cmd = ('ssh root@'+str(Instance.nodes[0].name)+' docker stack deploy --compose-file initial-docker-compose.yml p').split()
+    
+   
+    
+    cmd = ('docker-machine '+str(master)+' docker stack deploy --compose-file initial-docker-compose.yml p').split()
+    #cmd = ('ssh pi@'+str(Instance.nodes[0].name)+' docker stack deploy --compose-file initial-docker-compose.yml p').split()
 
     p = subprocess.Popen(cmd,stdout = subprocess.PIPE)
     output, errors = p.communicate()
@@ -204,7 +265,7 @@ def get():
 
 @app.route('/getmem/', methods=['GET'])
 def get_mem_per_container():
-    Instance=createInstance(instance)
+    
     for node in Instance.nodes:
 
         r = requests.get(url+'api/v1/query?query=avg_over_time(container_memory_usage_bytes%7Bcontainer_label_com_docker_swarm_node_id%3D~"'+str(node.cluster_id[0])+'"%2C%20id%3D~"%2Fdocker%2F.*"%7D%5B5m%5D)%2F1024%2F1024&g0.tab=1')
@@ -313,7 +374,8 @@ def new_approach():
         json.dump(data, file)
 
     #cmd = ('docker-machine ssh manager docker stack deploy --compose-file updated-docker-compose.yml p ').split()
-    cmd = ('ssh root@'+str(Instance.nodes[0].name)+' docker stack deploy --compose-file updated-docker-compose.yml p ').split()
+    #cmd = ('docker-machine ssh '+str(Instance.nodes[0].name)+' docker stack deploy --compose-file updated-docker-compose.yml p ').split()
+    cmd = ('ssh pi@'+str(master)+' docker stack deploy --compose-file updated-docker-compose.yml p ').split()
     
 
     p = subprocess.Popen(cmd)
