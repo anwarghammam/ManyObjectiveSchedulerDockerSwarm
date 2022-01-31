@@ -20,7 +20,10 @@ class Data:
     def get_nodes(self):
 
         machines=[]
-
+        machines_ids=[]
+        roles=[]
+        status=[]
+        activated=[]
         with  open(r"./test3.txt",'w') as file :
 
 
@@ -36,40 +39,51 @@ class Data:
 
 
             for line in file:
-
-                line=line.replace("*",'')
+                if (line.find("*")!=-1):
+                    line=line.replace("*",'')
+                    
+                    roles.append("manager")
+                else:
+                    roles.append('worker')
                 groupe=line.split()
                 machines.append(groupe[1])
+                machines_ids.append(groupe[0])
+                status.append(groupe[2])
 
         print(machines)
         del machines[0]
-        return machines
-    def get_nodes_Id(self):
-        machines=self.get_nodes()
-        machines_ids=[]
-        roles=[]
-        with open(r"./test3.txt",'r') as file:
-
-
-            for line in file:
-
-                line=line.replace("*",'')
-                groupe=line.split()
-                machines_ids.append(groupe[0])
-
-        print(machines_ids)
         del machines_ids[0]
-        return machines_ids
+        del roles[0]
+        del status[0]
+        for st in status :
+            if str(st)=="Ready":
+                activated.append('true')
+            else:
+                activated.append('false')
+        return machines,machines_ids,roles,activated
+    # def get_nodes_Id(self):
+    #     machines=self.get_nodes()
+    #     machines_ids=[]
+    #     roles=[]
+    #     with open(r"./test3.txt",'r') as file:
 
-    def get_data(self):
-        machines=self.get_nodes()
+
+    #         for line in file:
+
+    #             line=line.replace("*",'')
+    #             groupe=line.split()
+    #             machines_ids.append(groupe[0])
+
+    #     print(machines_ids)
+    #     del machines_ids[0]
+    #     return machines_ids
+
+    def get_data(self,machines):
+        
         containers=[]
         initial_state=[]
         images=[]
-        roles=[]
-        roles.append("manager")
-        for i in range(len(machines)-1):
-            roles.append('worker')
+        
 
         for i,machine in enumerate(machines) :
             containers1=[]
@@ -128,7 +142,7 @@ class Data:
                 images.append(img)
 
 
-        return images,containers,roles,initial_state,machines
+        return images,containers,initial_state,machines
 
 
 
@@ -136,6 +150,11 @@ class Data:
     def updateDockerCompose(self,containers,images,state,machines,file):
         services_to_shutdown=[]
         eliminate=[]
+        master=''
+
+        for node in machines:
+            if node.Status=="Leader":
+                master=node.name
         with open(r'DockerComposeFiles/docker-compose.yml') as file2:
 
             compose = yaml.load(file2,Loader=yaml.FullLoader)
@@ -196,12 +215,12 @@ class Data:
 
         #cmd = ('ssh pi@'+str(machines[0].name)+' docker stack deploy -c updated-docker-compose.yml p ').split()
 
-        cmd = ("docker-machine scp localhost:"+str(file)+"  docker@"+str(machines[0].name)+":. ").split()
+        cmd = ("docker-machine scp localhost:"+str(file)+"  docker@"+str(master)+":. ").split()
 
         p = subprocess.Popen(cmd)
         output, errors = p.communicate()
 
-        cmd = ('docker-machine ssh '+str(machines[0].name)+' docker stack deploy -c updated-docker-compose.yml p ').split()
+        cmd = ('docker-machine ssh '+str(master)+' docker stack deploy -c updated-docker-compose.yml p ').split()
 
         p = subprocess.Popen(cmd)
         output, errors = p.communicate()
@@ -372,8 +391,8 @@ class Data:
         return(constraints)
 
 
-    def createjson(self,machines,containers,initial_state,images,dependencies,constraints,roles):
-        machines_IDS=self.get_nodes_Id()
+    def createjson(self,machines,machines_IDS,containers,initial_state,images,dependencies,constraints,roles,activated):
+        
 
         with open(r'instanceExamples/data.json', mode='w', encoding='utf-8') as file:
 
@@ -384,10 +403,10 @@ class Data:
             for i,n in enumerate(machines):
                 if roles[i]=="manager":
 
-                    one_node = {'id':i,'name': n,"Manager Status": "Leader","cluster_id":machines_IDS[i],"activated": 'true', "max_power_consumption": 1030, "Maxmem":0}
+                    one_node = {'id':i,'name': n,"Manager Status": "Leader","cluster_id":machines_IDS[i],"activated": activated[i], "max_power_consumption": 1030, "Maxmem":0}
                     nodes.append(one_node)
                 else:
-                    one_node = {'id':i,'name': n,"Manager Status": "worker","cluster_id":machines_IDS[i],"activated": 'true', "max_power_consumption": 1030, "Maxmem":0}
+                    one_node = {'id':i,'name': n,"Manager Status": "worker","cluster_id":machines_IDS[i],"activated": activated[i], "max_power_consumption": 1030, "Maxmem":0}
                     nodes.append(one_node)
                     
             for i,n in enumerate(containers):
@@ -411,14 +430,9 @@ class Data:
 
 def GetAllData():
     data=Data()
-    images,containers,roles,initial_state,machines=data.get_data()
-    machines_IDS=data.get_nodes_Id()
-    print(machines_IDS)
-    print(roles)
-    print(containers)
+    machines,machines_ids,roles,activated=data.get_nodes()
+    images,containers,initial_state,machines=data.get_data(machines)
     dependencies=data.get_dependencies(images,containers)
-    print(dependencies)
-    #print(data.get_constraints(machines, roles, images))
-    data.createjson(machines,containers,initial_state,images,dependencies,[[] for i in range(len(containers))],roles)
+    data.createjson(machines,machines_ids,containers,initial_state,images,dependencies,[[] for i in range(len(containers))],roles,activated)
     
 

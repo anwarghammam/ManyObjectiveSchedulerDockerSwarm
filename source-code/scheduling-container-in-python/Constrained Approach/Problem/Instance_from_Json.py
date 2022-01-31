@@ -7,19 +7,20 @@ Created on Fri Apr 16 15:56:23 2021
 """
 
 import json
-
+import os
 from instance.Node import Node
 from instance.Container import Container
 from instance.Instance import Instance
-import extract_data 
+from extract_data import GetAllData
 
 
 def createInstance(Instance):
     
     
+    if (os.path.getsize(r"instanceExamples/data.json") == 0):
+        
+        GetAllData()
     
-    
-
     
     f = open(r"instanceExamples/data.json")
    
@@ -46,8 +47,8 @@ def createInstance(Instance):
     
     return Instance
 
-instance=Instance()
-Instance=createInstance(instance)
+# instance=Instance()
+# Instance=createInstance(instance)
 # objs=[]
 # for ob in Instance.objectives:
 #     for key,value in enumerate((ob)):

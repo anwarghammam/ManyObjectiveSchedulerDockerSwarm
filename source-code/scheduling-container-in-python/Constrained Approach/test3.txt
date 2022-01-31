@@ -1,0 +1,4 @@
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+34ng5xl28k3jkkwczqlio10ws *   manager             Ready               Active              Leader              19.03.12
+19c1ry8gco3qquhhz7hpebi4w     worker1             Ready               Active              Reachable           19.03.12
+w4ospdwy9usmlru4n4sok8316     worker2             Ready               Active                                  19.03.12
