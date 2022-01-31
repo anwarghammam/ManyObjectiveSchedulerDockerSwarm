@@ -101,8 +101,8 @@ Once the environment and the containers are ready, we will enable our backend AP
 ## BackEnd
 
 <br> </br>
-
-First go to file API.py, and change the variable url in line 28 with your manager ip-address (http://ip-address:9090/'
+Just one change need to be done in the
+First go to file extract_data.py in source-code/scheduling-container-in-python/ConstrainedApproach/extract_data.py, and change the variable manager in line 28 with your manager name.
 Now, you need to run the backend (in the "scheduling-container-in-python" repository). Please go to you Anaconda Prompt (Anaconda needs to be installed on your host so you can install all needed dependencies for the project) and run the <strong> API.py </strong> file using the following command:
 <br> </br>
 ```bash
@@ -117,7 +117,7 @@ And now everything is ready! you can test the demo in the dashboard.
 
 ## DASHBOARD
 <br>
-Before running the app, there are some changes that you have to do since you are using your own docker machines.
+Before running the app, there is one change that you have to do, since you are using your own docker machines.
 <br> </br>
 Please go to <strong>source-code/DASHBOARD/src/api.service.ts</strong> and replace the variable <strong> url </strong> with "http://manager-ip-address:9090".
  <br> </br>   
@@ -129,6 +129,7 @@ Now, open a terminal on the dashboard project and run the following command:
 $ npm install // To install the dependecnies
 $ ng serve   // to run the app
 ```
+
 Please access on your browser http://localhost:4200. If everything is working well, you are going to see the dashboard we see everytime.
 
 Now, everything is ready to go!!
