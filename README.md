@@ -7,7 +7,7 @@ Many-objective Container Scheduling
 
 This project is built based on basically two technologies described as follows:
 * Python
-* Angular 
+* Angular (In your environment, you have to install npm, nodejs, and angular cli)
 
 
 At this point, we have to create a swarm where one of the machine is a manager and others are workers.
