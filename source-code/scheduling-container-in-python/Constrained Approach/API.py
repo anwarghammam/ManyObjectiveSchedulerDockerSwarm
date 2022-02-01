@@ -21,11 +21,11 @@ from instance.Instance import Instance
 from Problem.Instance_from_Json import createInstance
 
 instance=Instance()
-Instance=createInstance(instance)
+MyInstance=createInstance(instance)
 url=''
 master=''
 
-for node in Instance.nodes:
+for node in MyInstance.nodes:
     if node.Status=="Leader":
         master=node.name
 
@@ -86,6 +86,17 @@ def events():
     #print(c)
     with open(r"instanceExamples/data.json", 'w') as f:
         json.dump(c, f)
+        
+    
+    
+    with open(r"./instanceExamples/data.json", "r") as file:
+        data= json.load(file)
+        for node in data['nodes']:
+            if node['max_power_consumption']==0:
+                node['activated']="false"
+    with open(r"./instanceExamples/data.json", "w") as file:
+        with open(r"./instanceExamples/data.json", "w") as file:
+            json.dump(data, file)
     return 'JSON posted'
 
 
@@ -185,20 +196,25 @@ def get_nodes():
             for i,node_info in enumerate(info):
                 print(node_info[2])
                 
-                if (node_info[2]=='Down'):
+                if (node_info[2]=='Down'and MyInstance.nodes[i].activated=='true'):
                     print(node_info)
                     with open(r"./instanceExamples/data.json", "r") as file:
                         data= json.load(file)
                         data['nodes'][i]['activated']="false"
                     with open(r"./instanceExamples/data.json", "w") as file:
                         json.dump(data, file)
-                if (node_info[2]=='Ready' and Instance.nodes[i].activated=='false'):
+                    new_approach()
+                        
+                    
+                if (node_info[2]=='Ready' and MyInstance.nodes[i].activated=='false'):
                     print(node_info)
                     with open(r"./instanceExamples/data.json", "r") as file:
                         data= json.load(file)
                         data['nodes'][i]['activated']="true"
                     with open(r"./instanceExamples/data.json", "w") as file:
                         json.dump(data, file)
+                        
+                    new_approach()
                         
                 
             if (info[1][4]=='Unreachable'):
@@ -209,6 +225,8 @@ def get_nodes():
                     data['nodes'][0]['activated']="false"
                 with open(r"./instanceExamples/data.json", "w") as file:
                     json.dump(data, file)
+                new_approach()   
+               
                 
                
                 return(jsonify(msg))
@@ -266,7 +284,7 @@ def get():
 @app.route('/getmem/', methods=['GET'])
 def get_mem_per_container():
     
-    for node in Instance.nodes:
+    for node in MyInstance.nodes:
 
         r = requests.get(url+'api/v1/query?query=avg_over_time(container_memory_usage_bytes%7Bcontainer_label_com_docker_swarm_node_id%3D~"'+str(node.cluster_id[0])+'"%2C%20id%3D~"%2Fdocker%2F.*"%7D%5B5m%5D)%2F1024%2F1024&g0.tab=1')
 
@@ -285,7 +303,7 @@ def get_mem_per_container():
 
                 json.dump(data, file)
 
-    for node in Instance.nodes:
+    for node in MyInstance.nodes:
         #print(node.cluster_id)
         r = requests.get(url+'api/v1/query?query=sum(node_memory_MemTotal_bytes%20*%20on(instance)%20group_left(node_name)%20node_meta%7Bnode_id%3D~"'+str(node.cluster_id[0])+'"%7D)%2F1000%2F1000&g0.tab=1')
 
@@ -304,7 +322,7 @@ def get_mem_per_container():
 
             json.dump(data, file)
             
-    for node in Instance.nodes:
+    for node in MyInstance.nodes:
 
         r = requests.get(url+'api/v1/query?query=sum(irate(container_cpu_usage_seconds_total%7Bcontainer_label_com_docker_swarm_node_id%3D~"'+str(node.cluster_id[0])+'"%2C%20id%3D~"%2Fdocker%2F.*"%7D%5B5m%5D))%20by%20(name)%20*%20100%20&g0.tab=1')
 
@@ -357,11 +375,11 @@ def get_mem_per_container():
 @app.route('/newapproach/', methods=['GET'])
 
 def new_approach():
-
+    Myinst= Instance()
+    Myinstance=createInstance(Myinst)
     
-    
-    time=transform(Instance)
-    y = {"containers":len(Instance.containers),
+    time=transform(Myinstance)
+    y = {"containers":len(Myinstance.containers),
      "exectime": round(time, 2)
 
     }
