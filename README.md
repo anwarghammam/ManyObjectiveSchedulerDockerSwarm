@@ -7,10 +7,34 @@ Many-objective Container Scheduling
 
 This project is built based on basically two technologies described as follows:
 * Python
-* Angular 
+* Angular (In your environment, you have to install npm, nodejs, and angular cli)
 
 
-At this point, we have to create a swarm where one of the machine is a manager and others are workers.
+Also, it is based on 3 docker machines so we will be using a VMware to create them , thus please run the following instructions:
+
+## for Ubuntu 
+
+```bash
+$ sudo apt-get install virtualbox
+$ curl -L https://github.com/docker/machine/releases/download/v0.16.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine &&
+chmod +x /tmp/docker-machine && sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
+
+```
+## for Windows
+If you have not yet installed Docker for Windows, please see this link https://docs.docker.com/docker-for-windows/install/ for an explanation.
+To Create machines locally using VirtualBox https://www.virtualbox.org/. This driver requires VirtualBox 5+ to be installed on your host. Using VirtualBox 4.3+ should work but will give you a warning. Older versions will refuse to work. 
+
+Now, you are ready to create a docker machine, please run the following command on your cmd:
+```
+docker-machine create --driver virtualbox "the machine's name" 
+```
+Please make sure to give the following names to the created machines : "manager" , "worker1", "worker2" since we used them in our code.
+<br> </br>
+You can verify the creation of the machines by running:
+```
+$ docker-machine ls
+```
+At this point, we consider that you installed virtual box, and create the virtual machines, we have to create a swarm where one of the machine is a manager and others are workers.
 First, connect to the manager using ssh, Then, to create the swarm, you have first to get the IP address of your manager using <strong> "ifconfig" </strong> and <strong> "ip addr" </strong> and then run the following command:
 ```
 $ docker swarm init --advertise-addr ip-adress
@@ -33,8 +57,8 @@ Now we have to install some services for Docker Swarm monitoring in the manager 
     
 ## Install
 ```bash
-$ git clone https://github.com/anwarghammam/docker-swarm-monitoring-arm64 // if the rasberry pies work with arm-architecture, but if it is amd clone the following https://github.com/anwarghammam/Monitoring-Docker-Swarm
-$ cd docker-swarm-monitoring-arm64/
+$ git clone https://github.com/anwarghammam/Monitoring-Docker-Swarm
+$ cd Monitoring-Docker-Swarm/
 $ docker stack deploy --compose-file docker-compose.yml p
 ```
 
@@ -77,8 +101,8 @@ Once the environment and the containers are ready, we will enable our backend AP
 ## BackEnd
 
 <br> </br>
-
-First go to file API.py, and change the variable url in line 28 with your manager ip-address (http://ip-address:9090/'
+Just one change need to be done in the
+First go to file extract_data.py in source-code/scheduling-container-in-python/ConstrainedApproach/extract_data.py, and change the variable manager in line 28 with your manager name.
 Now, you need to run the backend (in the "scheduling-container-in-python" repository). Please go to you Anaconda Prompt (Anaconda needs to be installed on your host so you can install all needed dependencies for the project) and run the <strong> API.py </strong> file using the following command:
 <br> </br>
 ```bash
@@ -93,7 +117,7 @@ And now everything is ready! you can test the demo in the dashboard.
 
 ## DASHBOARD
 <br>
-Before running the app, there are some changes that you have to do since you are using your own docker machines.
+Before running the app, there is one change that you have to do, since you are using your own docker machines.
 <br> </br>
 Please go to <strong>source-code/DASHBOARD/src/api.service.ts</strong> and replace the variable <strong> url </strong> with "http://manager-ip-address:9090".
  <br> </br>   
@@ -105,6 +129,7 @@ Now, open a terminal on the dashboard project and run the following command:
 $ npm install // To install the dependecnies
 $ ng serve   // to run the app
 ```
+
 Please access on your browser http://localhost:4200. If everything is working well, you are going to see the dashboard we see everytime.
 
 Now, everything is ready to go!!
