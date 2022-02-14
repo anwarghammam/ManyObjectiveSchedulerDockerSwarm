@@ -87,7 +87,7 @@ you can check the containers running in every machine using:
 docker ps
 ```
 
-For every machine we will have a node-exporter and a cadvisor containers running since these containers are golabl, it means that they have to run in every node in the cluster to extract the needed metrics. However, only one prometheus in the manager (we need one instance for collecting data from both nodes)
+We have for every node of our cluster a Node-Exporter and a cAdvisor instance, but just one Prometheus instance in our manager to collect the data by scraping its targets (cadvisor and node-exporter). After extracting all metrics, we created queries using Promql, to consume the necessary data we want to show in our dashboard via its HTTP API.
 
 ## Using an example of a docker project
 
