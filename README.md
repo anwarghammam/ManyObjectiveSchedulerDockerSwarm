@@ -6,7 +6,7 @@ Many-objective Container Scheduling
 ## How to Install
 
 This project is built based on basically two technologies described as follows:
-* Python
+* Python (prepare your python environment)
 * Angular (In your environment, you have to install npm, nodejs, and angular cli)
 
 
@@ -45,8 +45,7 @@ Next, you can check the swarm members using:
 ```
 $ docker node ls
 ```
-
-Now we have to install some services for Docker Swarm monitoring in the manager machine (to expose Docker engine and container metrics in our project)
+To monitor the nodes and containers metrics (eg: the distributions of the containers per nodes, the number fo services, the resources conmption in every node consumed by every vontainer etc..), we used open sources tools that helped us to parse the cluster in real time and update the values in our dashborad every s seconds.
 
 <p> Services :</p> 
 
@@ -54,6 +53,26 @@ Now we have to install some services for Docker Swarm monitoring in the manager 
 * node-exporter (host metrics collector)
 * cAdvisor (containers metrics collector)
 
+Now we have to install some services for Docker Swarm monitoring in the manager machine (to expose Docker engine and container metrics in our project)
+
+<p> Services :</p> 
+
+* prometheus (metrics database) `http://<swarm-manager-ip>:9090`: is a leading open-source monitoring system and a time series database. It provides a functional query language called PromQL (Prometheus Query Language) that lets the user select and aggregate time series data in real time that can be shown after as a graph, consumed by our dashborad via the HTTP API.
+* node-exporter : is a node metrics collector designed to monitor the host system  by exposing a wide variety of hardware and kernel-related metrics.
+* cAdvisor :is a container's metrics collector that provides container users an understanding of the resource usage and performance characteristics of their running containers. It is a running daemon that collects, aggregates, processes, and exports information about running containers. 
+
+## Docker Swarm Monitoring Architecture
+In order to collect metrics from swarm nodes, we need to deploy the node-exporter and the cAdvisor on each node. All we need is an automated way for Prometheus to reach these instances so it can "scrape" them to collect nodes and containers metrics from them.
+
+<div align="center">
+    <kbd>
+        <img src="https://github.com/anwarghammam/many-objective-container-scheduling-main/blob/main/Screen%20Shot%202022-02-14%20at%201.44.55%20PM.png"/>
+    </kbd>
+    <br/><br/>
+</div>
+<br> </br>
+
+We have for every node of our cluster a Node-Exporter and a cAdvisor instance, but just one Prometheus instance in our manager to collect the data by scraping its targets (cadvisor and node-exporter). After extracting all metrics, we created queries using Promql, to consume the necessary data we want to show in our dashboard via its HTTP API.
     
 ## Install
 ```bash
