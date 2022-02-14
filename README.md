@@ -89,7 +89,7 @@ docker ps
 
 We have for every node of our cluster a Node-Exporter and a cAdvisor instance, but just one Prometheus instance in our manager to collect the data by scraping its targets (cadvisor and node-exporter). After extracting all metrics, we created queries using Promql, to consume the necessary data we want to show in our dashboard via its HTTP API.
 
-## Using an example of a docker project
+## running a docker project (containers)
 
 Now, we will create a docker project on the cluster and run containers using a docker-compose file that I created with 50 containers.
 First, you will find this docker-compose file in 'many-objective-container-scheduling-main/source-code/scheduling-container-in-python/Constrained Approach/DockerComposeFiles/docker-compose.yml'
@@ -115,13 +115,13 @@ $ docker ps
 
 ```
 
-Once the environment and the containers are ready, we will enable our backend API that runs the scheduler and collects the data needed for the algorithm and run our dashboard
+Once the docker swarm is ready, the containers are running and the services to monitor the containers in real time is ready, we will now run our backend API that  collects the data needed for the sceduler from promtheus and using docker CLI, and run the algo to reallocated n=containers when needed.
 
 ## BackEnd
 
 <br> </br>
-Just one change need to be done in the
-First go to file extract_data.py in source-code/scheduling-container-in-python/ConstrainedApproach/extract_data.py, and change the variable manager in line 28 with your manager name.
+Just one change need to be done:
+First go to file extract_data.py in source-code/scheduling-container-in-python/ConstrainedApproach/extract_data.py, and change the manager name in line 30 with your manager name. <img src="Screen Shot 2022-02-14 at 2.05.54 PM.png"/>
 Now, you need to run the backend (in the "scheduling-container-in-python" repository). Please go to you Anaconda Prompt (Anaconda needs to be installed on your host so you can install all needed dependencies for the project) and run the <strong> API.py </strong> file using the following command:
 <br> </br>
 ```bash
@@ -145,11 +145,12 @@ Please go to <strong>source-code/DASHBOARD/src/api.service.ts</strong> and repla
 Now, open a terminal on the dashboard project and run the following command:
 
 ```bash
-$ npm install // To install the dependecnies
-$ ng serve   // to run the app
+$ npm install // To install the dependecnies (npm has to be already installed in your environment)
+$ ng serve or npm start   // to run the app
 ```
+By default, the app will be open bia port 4200, we can change it by running ng serve -p "port number".
 
-Please access on your browser http://localhost:4200. If everything is working well, you are going to see the dashboard we see everytime.
+once the app is running, Please access on your browser http://localhost:4200. If everything is working well, you are going to see the dashboard we see everytime.
 
 Now, everything is ready to go!!
 
