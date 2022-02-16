@@ -27,7 +27,7 @@ class Data:
         with  open(r"./test3.txt",'w') as file :
 
 
-            cmd = ('docker-machine ssh '+str(manager)+' docker node ls').split()
+            cmd = ('docker-machine ssh manager docker node ls').split()
             #cmd = (' ssh pi@node-01 docker node ls').split()
 
             p = subprocess.Popen(cmd,stdout=file)
