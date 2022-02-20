@@ -1,10 +1,10 @@
 
 
  function all(Managerurl){
+  
    
-    
     console.log("nour the best");
- var ctx = document.getElementById('myChart').getContext('2d');
+ var ctx = document.getElementById('myChart1').getContext('2d');
  var ctx2 = document.getElementById('myChart2').getContext('2d');
  var ctx3 = document.getElementById('myChart3').getContext('2d');
  var ctx4 = document.getElementById('myChart4').getContext('2d');
@@ -16,7 +16,7 @@
  //var ctx9 = document.getElementById('myChart9').getContext('2d');
  //var ctx10 = document.getElementById('myChart10').getContext('2d');
 
- url="http://192.168.99.110:9090/";
+ url="http://192.168.99.118:9090/";
  //url=Managerurl
 
  
@@ -365,16 +365,7 @@ all2=[]
 
 
 */
-
-
-
-
- console.log("anwar the best");
-
-
- 
-
- var myChart1 = new Chart(ctx, {
+var myChart1 = new Chart(ctx, {
     type: 'line',
     data: {
         },
@@ -382,19 +373,21 @@ all2=[]
        title: {
            display: true,
            text: '% of cpu usage per node '
-       }, 
-       scales: { xAxes: [{
-           type: 'time',
-           time: {
-               unit: 'minute',
-                                    
-           },
-           display: true,
-           scaleLabel: {
-               display: true,
-               labelString: 'value'
-           }                        
-       }]},
+       },
+        scales: {
+            xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'minute',
+                                              
+                },
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'value'
+                }                        
+            }]
+        },
         plugins: {
             'datasource-prometheus': {
                 prometheus: {
@@ -436,198 +429,44 @@ all2=[]
    }
               
             },
-            plugins: [
-               ChartDatasourcePrometheusPlugin,
-           ],
 
- });
- console.log("anwar the best!!");
- 
- var myChart2 = new Chart(ctx2, {
-     type: 'line',
-     data: {},
-     options: {
-        title: {
-            display: true,
-            text: 'System load per node'
-        },
-         scales: { xAxes: [{
-            type: 'time',
-            time: {
-                unit: 'minute',
-                                     
-            },
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'value'
-            }                        
-        }]},
-         plugins: {
-             'datasource-prometheus': {
-                 prometheus: {
-                     endpoint: url ,
-                    
-                 },
-                 query: query2,
-                 timeRange: {
-                     type: 'relative',
-                     start: start,
-                     end: end,
-                     msUpdateInterval: 5 * 1000,
-                 },
-             },
-         },
-     
-     annotation: {
-        // Defines when the annotations are drawn.
-        // This allows positioning of the annotation relative to the other
-        // elements of the graph.
-        //
-        // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
-        // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
-        drawTime: 'afterDatasetsDraw', // (default)
-
-        // Mouse events to enable on each annotation.
-        // Should be an array of one or more browser-supported mouse events
-        // See https://developer.mozilla.org/en-US/docs/Web/Events
-        events: ['click'],
-
-        // Double-click speed in ms used to distinguish single-clicks from
-        // double-clicks whenever you need to capture both. When listening for
-        // both click and dblclick, click events will be delayed by this
-        // amount.
-        dblClickSpeed: 350, // ms (default)
-
-        // Array of annotation configuration objects
-        // See below for detailed descriptions of the annotation options
-        annotations: [{
-            drawTime: 'afterDraw', // overrides annotation.drawTime if set
-            id: 'a-line-1', // optional
-            type: 'line',
-            mode: 'vertical',
-            scaleID: 'x-axis-0',
-            value:new Date() ,
-            borderColor: 'black',
-            borderWidth: 2,
-    
-               onClick: function(e) {
-                   // `this` is bound to the annotation element
-                   this.options.value=new Date();
-                   console.log(this)
-               }
-                     }]
-    }
-         },
-
-     plugins: [
-         ChartDatasourcePrometheusPlugin,
-     ],
- });
- console.log("drira the best");
- var myChart3 = new Chart(ctx3, {
-    type: 'line',
-    data: {},
-    options: {
-       title: {
-           display: true,
-           text: 'number of nodes'
-       },
-        scales: { xAxes: [{
-            type: 'time',
-            time: {
-                unit: 'minute',
-                                       
-            },
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'value'
-            }                        
-        }]},
-        plugins: {
-            'datasource-prometheus': {
-                prometheus: {
-                    endpoint: url ,
-                   
-                },
-                query: query3,
-                timeRange: {
-                    type: 'relative',
-                    start: start,
-                    end: end,
-                    msUpdateInterval: 5 * 1000,
-                },
-            },
-        },
-    
-    annotation: {
-       
-       drawTime: 'afterDatasetsDraw', // (default)
-       events: ['click'],
-
-       // Mouse events to enable on each annotation.
-       // Should be an array of one or more browser-supported mouse events
-       // See https://developer.mozilla.org/en-US/docs/Web/Events
+    plugins: [
+        ChartDatasourcePrometheusPlugin,
+        
       
-
-       // Double-click speed in ms used to distinguish single-clicks from
-       // double-clicks whenever you need to capture both. When listening for
-       // both click and dblclick, click events will be delayed by this
-       // amount.
-        // ms (default)
-
-       // Array of annotation configuration objects
-       // See below for detailed descriptions of the annotation options
-       annotations: [{
-        drawTime: 'afterDraw', // overrides annotation.drawTime if set
-        id: 'a-line-1', // optional
-        type: 'line',
-        mode: 'vertical',
-        scaleID: 'x-axis-0',
-        value:new Date() ,
-        borderColor: 'black',
-        borderWidth: 2,
-
-           onClick: function(e) {
-               // `this` is bound to the annotation element
-               this.options.value=new Date();
-           }
-                 }]
-   }},
-
-    plugins: [
-        ChartDatasourcePrometheusPlugin,
+       
     ],
-});
-console.log("titiii the best");
-var myChart4 = new Chart(ctx4, {
+ });
+
+ //myChart1.plugins.register(ChartDatasourcePrometheusPlugin);
+ console.log("anwar the best!!");
+ var myChart2 = new Chart(ctx2, {
     type: 'line',
     data: {},
     options: {
        title: {
            display: true,
-           text: 'Memory Usage per node (Mb)'
+           text: 'System load per node'
        },
         scales: { xAxes: [{
-            type: 'time',
-            time: {
-                unit: 'minute',
-                                        
-            },
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'value'
-            }                        
-        }]},
+           type: 'time',
+           time: {
+               unit: 'minute',
+                                    
+           },
+           display: true,
+           scaleLabel: {
+               display: true,
+               labelString: 'value'
+           }                        
+       }]},
         plugins: {
             'datasource-prometheus': {
                 prometheus: {
                     endpoint: url ,
                    
                 },
-                query: query4,
+                query: query2,
                 timeRange: {
                     type: 'relative',
                     start: start,
@@ -660,195 +499,351 @@ var myChart4 = new Chart(ctx4, {
        // Array of annotation configuration objects
        // See below for detailed descriptions of the annotation options
        annotations: [{
-        drawTime: 'afterDraw', // overrides annotation.drawTime if set
-        id: 'a-line-1', // optional
-        type: 'line',
-        mode: 'vertical',
-        scaleID: 'x-axis-0',
-        value:new Date() ,
-        borderColor: 'black',
-        borderWidth: 2,
-
-           onClick: function(e) {
-               // `this` is bound to the annotation element
-               this.options.value=new Date();
-              
-               
-           }
-                 }]
-   }},
-
-    plugins: [
-        ChartDatasourcePrometheusPlugin,
-    ],
-});
-console.log("chaimaa the best");
-var myChart5 = new Chart(ctx5, {
-    type: 'line',
-    data: {},
-    options: {
-       title: {
-           display: true,
-           text: 'Received network traffic per node'
-       },
-        scales: { xAxes: [{
-            type: 'time',
-            time: {
-                unit: 'minute',
-                                        
-            },
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'value'
-            }                        
-        }]},
-        plugins: {
-            'datasource-prometheus': {
-                prometheus: {
-                    endpoint: url ,
-                   
-                },
-                query: query5,
-                timeRange: {
-                    type: 'relative',
-                    start: start,
-                    end: end,
-                    msUpdateInterval: 5 * 1000,
-                },
-            },
+           drawTime: 'afterDraw', // overrides annotation.drawTime if set
+           id: 'a-line-1', // optional
+           type: 'line',
+           mode: 'vertical',
+           scaleID: 'x-axis-0',
+           value:new Date() ,
+           borderColor: 'black',
+           borderWidth: 2,
+   
+              onClick: function(e) {
+                  // `this` is bound to the annotation element
+                  this.options.value=new Date();
+                  console.log(this)
+              }
+                    }]
+   }
         },
-    
-    annotation: {
-       // Defines when the annotations are drawn.
-       // This allows positioning of the annotation relative to the other
-       // elements of the graph.
-       //
-       // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
-       // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
-       drawTime: 'afterDatasetsDraw', // (default)
-
-       // Mouse events to enable on each annotation.
-       // Should be an array of one or more browser-supported mouse events
-       // See https://developer.mozilla.org/en-US/docs/Web/Events
-       events: ['click'],
-
-       // Double-click speed in ms used to distinguish single-clicks from
-       // double-clicks whenever you need to capture both. When listening for
-       // both click and dblclick, click events will be delayed by this
-       // amount.
-       dblClickSpeed: 350, // ms (default)
-
-       // Array of annotation configuration objects
-       // See below for detailed descriptions of the annotation options
-       annotations: [{
-        drawTime: 'afterDraw', // overrides annotation.drawTime if set
-        id: 'a-line-1', // optional
-        type: 'line',
-        mode: 'vertical',
-        scaleID: 'x-axis-0',
-        value:new Date() ,
-        borderColor: 'black',
-        borderWidth: 2,
-
-           onClick: function(e) {
-               // `this` is bound to the annotation element
-               this.options.value=new Date();
-              
-               
-           }
-                 }]
-   }},
 
     plugins: [
         ChartDatasourcePrometheusPlugin,
     ],
 });
-
-
-
-          
-
-console.log("amal the best");
-var myChart6 = new Chart(ctx6, {
-    type: 'line',
-    data: {},
-    options: {
-       title: {
-           display: true,
-           text: 'transmit network traffic per node'
-       },
-        scales: { xAxes: [{
-            type: 'time',
-            time: {
-                unit: 'minute',
+var myChart3 = new Chart(ctx3, {
+   type: 'line',
+   data: {},
+   options: {
+      title: {
+          display: true,
+          text: 'number of nodes'
+      },
+       scales: { xAxes: [{
+           type: 'time',
+           time: {
+               unit: 'minute',
                                       
-            },
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'value'
-            }                        
-        }]},
-        plugins: {
-            'datasource-prometheus': {
-                prometheus: {
-                    endpoint:url ,
-                   
-                },
-                query: query6,
-                timeRange: {
-                    type: 'relative',
-                    start: start,
-                    end: end,
-                    msUpdateInterval: 5 * 1000,
-                },
-            },
-        },
-    
-    annotation: {
-       // Defines when the annotations are drawn.
-       // This allows positioning of the annotation relative to the other
-       // elements of the graph.
-       //
-       // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
-       // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
-       drawTime: 'afterDatasetsDraw', // (default)
-       events: ['click'],
-       // Mouse events to enable on each annotation.
-       // Should be an array of one or more browser-supported mouse events
-       // See https://developer.mozilla.org/en-US/docs/Web/Events
-       //events: ['click'],
+           },
+           display: true,
+           scaleLabel: {
+               display: true,
+               labelString: 'value'
+           }                        
+       }]},
+       plugins: {
+           'datasource-prometheus': {
+               prometheus: {
+                   endpoint: url ,
+                  
+               },
+               query: query3,
+               timeRange: {
+                   type: 'relative',
+                   start: start,
+                   end: end,
+                   msUpdateInterval: 5 * 1000,
+               },
+           },
+       },
+   
+   annotation: {
+      
+      drawTime: 'afterDatasetsDraw', // (default)
+      events: ['click'],
 
-       // Double-click speed in ms used to distinguish single-clicks from
-       // double-clicks whenever you need to capture both. When listening for
-       // both click and dblclick, click events will be delayed by this
-       // amount.
-       dblClickSpeed: 350, // ms (default)
+      // Mouse events to enable on each annotation.
+      // Should be an array of one or more browser-supported mouse events
+      // See https://developer.mozilla.org/en-US/docs/Web/Events
+     
 
-       // Array of annotation configuration objects
-       // See below for detailed descriptions of the annotation options
-       annotations: [{
-        drawTime: 'afterDraw', // overrides annotation.drawTime if set
-        id: 'a-line-1', // optional
-        type: 'line',
-        mode: 'vertical',
-        scaleID: 'x-axis-0',
-        value:new Date() ,
-        borderColor: 'black',
-        borderWidth: 2,
+      // Double-click speed in ms used to distinguish single-clicks from
+      // double-clicks whenever you need to capture both. When listening for
+      // both click and dblclick, click events will be delayed by this
+      // amount.
+       // ms (default)
 
-           onClick: function(e) {
-               // `this` is bound to the annotation element
-               this.options.value=new Date();
-               
-           }
-                 }]
-   }},
+      // Array of annotation configuration objects
+      // See below for detailed descriptions of the annotation options
+      annotations: [{
+       drawTime: 'afterDraw', // overrides annotation.drawTime if set
+       id: 'a-line-1', // optional
+       type: 'line',
+       mode: 'vertical',
+       scaleID: 'x-axis-0',
+       value:new Date() ,
+       borderColor: 'black',
+       borderWidth: 2,
 
-    plugins: [
-        ChartDatasourcePrometheusPlugin,
-    ],
+          onClick: function(e) {
+              // `this` is bound to the annotation element
+              this.options.value=new Date();
+          }
+                }]
+  }},
+
+   plugins: [
+       ChartDatasourcePrometheusPlugin,
+   ],
+});
+var myChart4 = new Chart(ctx4, {
+   type: 'line',
+   data: {},
+   options: {
+      title: {
+          display: true,
+          text: 'Memory Usage per node (Mb)'
+      },
+       scales: { xAxes: [{
+           type: 'time',
+           time: {
+               unit: 'minute',
+                                       
+           },
+           display: true,
+           scaleLabel: {
+               display: true,
+               labelString: 'value'
+           }                        
+       }]},
+       plugins: {
+           'datasource-prometheus': {
+               prometheus: {
+                   endpoint: url ,
+                  
+               },
+               query: query4,
+               timeRange: {
+                   type: 'relative',
+                   start: start,
+                   end: end,
+                   msUpdateInterval: 5 * 1000,
+               },
+           },
+       },
+   
+   annotation: {
+      // Defines when the annotations are drawn.
+      // This allows positioning of the annotation relative to the other
+      // elements of the graph.
+      //
+      // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+      // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
+      drawTime: 'afterDatasetsDraw', // (default)
+
+      // Mouse events to enable on each annotation.
+      // Should be an array of one or more browser-supported mouse events
+      // See https://developer.mozilla.org/en-US/docs/Web/Events
+      events: ['click'],
+
+      // Double-click speed in ms used to distinguish single-clicks from
+      // double-clicks whenever you need to capture both. When listening for
+      // both click and dblclick, click events will be delayed by this
+      // amount.
+      dblClickSpeed: 350, // ms (default)
+
+      // Array of annotation configuration objects
+      // See below for detailed descriptions of the annotation options
+      annotations: [{
+       drawTime: 'afterDraw', // overrides annotation.drawTime if set
+       id: 'a-line-1', // optional
+       type: 'line',
+       mode: 'vertical',
+       scaleID: 'x-axis-0',
+       value:new Date() ,
+       borderColor: 'black',
+       borderWidth: 2,
+
+          onClick: function(e) {
+              // `this` is bound to the annotation element
+              this.options.value=new Date();
+             
+              
+          }
+                }]
+  }},
+
+   plugins: [
+       ChartDatasourcePrometheusPlugin,
+   ],
 });
 
-console.log("anwar the best");}
+var myChart5 = new Chart(ctx5, {
+   type: 'line',
+   data: {},
+   options: {
+      title: {
+          display: true,
+          text: 'Received network traffic per node'
+      },
+       scales: { xAxes: [{
+           type: 'time',
+           time: {
+               unit: 'minute',
+                                       
+           },
+           display: true,
+           scaleLabel: {
+               display: true,
+               labelString: 'value'
+           }                        
+       }]},
+       plugins: {
+           'datasource-prometheus': {
+               prometheus: {
+                   endpoint: url ,
+                  
+               },
+               query: query5,
+               timeRange: {
+                   type: 'relative',
+                   start: start,
+                   end: end,
+                   msUpdateInterval: 5 * 1000,
+               },
+           },
+       },
+   
+   annotation: {
+      // Defines when the annotations are drawn.
+      // This allows positioning of the annotation relative to the other
+      // elements of the graph.
+      //
+      // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+      // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
+      drawTime: 'afterDatasetsDraw', // (default)
+
+      // Mouse events to enable on each annotation.
+      // Should be an array of one or more browser-supported mouse events
+      // See https://developer.mozilla.org/en-US/docs/Web/Events
+      events: ['click'],
+
+      // Double-click speed in ms used to distinguish single-clicks from
+      // double-clicks whenever you need to capture both. When listening for
+      // both click and dblclick, click events will be delayed by this
+      // amount.
+      dblClickSpeed: 350, // ms (default)
+
+      // Array of annotation configuration objects
+      // See below for detailed descriptions of the annotation options
+      annotations: [{
+       drawTime: 'afterDraw', // overrides annotation.drawTime if set
+       id: 'a-line-1', // optional
+       type: 'line',
+       mode: 'vertical',
+       scaleID: 'x-axis-0',
+       value:new Date() ,
+       borderColor: 'black',
+       borderWidth: 2,
+
+          onClick: function(e) {
+              // `this` is bound to the annotation element
+              this.options.value=new Date();
+             
+              
+          }
+                }]
+  }},
+
+   plugins: [
+       ChartDatasourcePrometheusPlugin,
+   ],
+});
+
+
+
+         
+
+
+var myChart6 = new Chart(ctx6, {
+   type: 'line',
+   data: {},
+   options: {
+      title: {
+          display: true,
+          text: 'transmit network traffic per node'
+      },
+       scales: { xAxes: [{
+           type: 'time',
+           time: {
+               unit: 'minute',
+                                     
+           },
+           display: true,
+           scaleLabel: {
+               display: true,
+               labelString: 'value'
+           }                        
+       }]},
+       plugins: {
+           'datasource-prometheus': {
+               prometheus: {
+                   endpoint:url ,
+                  
+               },
+               query: query6,
+               timeRange: {
+                   type: 'relative',
+                   start: start,
+                   end: end,
+                   msUpdateInterval: 5 * 1000,
+               },
+           },
+       },
+   
+   annotation: {
+      // Defines when the annotations are drawn.
+      // This allows positioning of the annotation relative to the other
+      // elements of the graph.
+      //
+      // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+      // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
+      drawTime: 'afterDatasetsDraw', // (default)
+      events: ['click'],
+      // Mouse events to enable on each annotation.
+      // Should be an array of one or more browser-supported mouse events
+      // See https://developer.mozilla.org/en-US/docs/Web/Events
+      //events: ['click'],
+
+      // Double-click speed in ms used to distinguish single-clicks from
+      // double-clicks whenever you need to capture both. When listening for
+      // both click and dblclick, click events will be delayed by this
+      // amount.
+      dblClickSpeed: 350, // ms (default)
+
+      // Array of annotation configuration objects
+      // See below for detailed descriptions of the annotation options
+      annotations: [{
+       drawTime: 'afterDraw', // overrides annotation.drawTime if set
+       id: 'a-line-1', // optional
+       type: 'line',
+       mode: 'vertical',
+       scaleID: 'x-axis-0',
+       value:new Date() ,
+       borderColor: 'black',
+       borderWidth: 2,
+
+          onClick: function(e) {
+              // `this` is bound to the annotation element
+              this.options.value=new Date();
+              
+          }
+                }]
+  }},
+
+   plugins: [
+       ChartDatasourcePrometheusPlugin,
+   ],
+});
+ 
+}

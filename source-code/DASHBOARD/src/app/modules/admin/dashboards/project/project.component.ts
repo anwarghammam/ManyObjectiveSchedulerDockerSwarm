@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ApexOptions } from 'ng-apexcharts';
 import { ProjectService } from 'app/modules/admin/dashboards/project/project.service';
 import { ApiService } from 'api.service';
- 
+
 
 import { ConditionalExpr } from '@angular/compiler';
 import Chart from 'chart.js';
@@ -185,7 +185,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
         this.api.updateStatus()
         .subscribe(
+           
             resp => {
+               
                 this.StatusMsg=resp.body
                 console.log(this.StatusMsg)
                // var color = Math.floor((Math.random() * 4) + 1);
@@ -250,7 +252,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
        
             this.api.getmem()
             .subscribe(resp => {
-
+               
                console.log(resp)
             });
 
@@ -381,6 +383,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     }
 
+
+    initrealdata(){
+        all(String(this.api.url));
+    }
 
 
     get_containers() {

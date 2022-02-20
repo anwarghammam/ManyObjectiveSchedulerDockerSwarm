@@ -222,26 +222,28 @@
                 <!-- Avatar and name -->
 
                 <!-- Main -->
-                <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+                <div (click)="initrealdata()" class="flex-auto border-t -mt-px pt-4 sm:pt-6">
                     <div class="w-full max-w-screen-xl mx-auto">
                         <!-- Tabs -->
-                        <mat-tab-group class="sm:px-2" [animationDuration]="'0'">
+                        <mat-tab-group  class="sm:px-2" [animationDuration]="'0'">
 
 
 
 
-                            <mat-tab label="Real time Resource Consumption Per Node">
+                            <mat-tab  label="Real time Resource Consumption Per Node">
                                 <ng-template matTabContent>
                                     <!-- Budget -->
                                     <div class="  flex flex-col flex-auto p-6 bg-card rounded-2xl shadow">
 
 
-                                        <canvas id="myChart"> </canvas>
+                                        <canvas id="myChart1"> </canvas>
                                         <canvas id="myChart2"> </canvas>
                                         <canvas id="myChart5"> </canvas>
                                         <canvas id="myChart3"> </canvas>
                                         <canvas id="myChart4"> </canvas>
                                         <canvas id="myChart6"> </canvas>
+
+                                        
 
                                     </div>
                                 </ng-template>
