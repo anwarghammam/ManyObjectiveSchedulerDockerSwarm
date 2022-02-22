@@ -3,7 +3,6 @@
  function all(Managerurl){
   
    
-    console.log("nour the best");
  var ctx = document.getElementById('myChart1').getContext('2d');
  var ctx2 = document.getElementById('myChart2').getContext('2d');
  var ctx3 = document.getElementById('myChart3').getContext('2d');
@@ -22,11 +21,10 @@
  
  const query1='100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])  * on(instance) group_left(node_name) node_meta * 100) by (node_name))';
  const query2 = 'sum(node_load5 * on(instance) group_left(node_name) node_meta) by (node_name)';
- 
  const query3 ='count(node_meta * on(instance) group_left(node_name) node_meta)';
  const query4 ='sum((node_memory_MemTotal_bytes/1000000 - node_memory_MemFree_bytes/1000000 - node_memory_Cached_bytes/1000000 - node_memory_Buffers_bytes/1000000 - node_memory_Slab_bytes/1000000) * on(instance) group_left(node_name) node_meta) by (node_name)'
 const query5="sum(rate(container_network_receive_bytes_total[5m]) * on(container_label_com_docker_swarm_node_id) group_left(node_name) node_meta) by (node_name)"
-const query6="sum(rate(container_network_transmit_bytes_total [5m]) * on(container_label_com_docker_swarm_node_id) group_left(node_name) node_meta) by (node_name)" 
+const query6="sum(rate(container_network_transmit_bytes_total[5m]) * on(container_label_com_docker_swarm_node_id) group_left(node_name) node_meta) by (node_name)" 
 
 
 //const query9='topk(10, avg_over_time(container_memory_usage_bytes{container_label_com_docker_swarm_node_id=~"'+String(url_node)+'", id=~"/docker/.*"}[5m])/1000/1000)'
@@ -34,11 +32,14 @@ const query6="sum(rate(container_network_transmit_bytes_total [5m]) * on(contain
 // const query10='topk(10, sum(irate(container_cpu_usage_seconds_total{container_label_com_docker_swarm_node_id=~"'+String(url_node)+'", id=~"/docker/.*"}[5m])) by (name) * 100 )'
 // const query = 'node_load1';
  // // absolute
- // const start = new Date(new Date().getTime() - (60 * 60 * 1000));
- // const end = new Date();
+//  const start = new Date(new Date().getTime() - (60 * 60 * 1000));
+//  const end = new Date();
  // relative
+
+
  const start = -30 * 60 * 1000;
  const end = 0; // now
+ const step = 25;
 colors=['red','blue','orange','green','gray','pink','yellow','white']
 
 
@@ -394,11 +395,29 @@ var myChart1 = new Chart(ctx, {
                     endpoint: url,
                    
                 },
-                query: query1,
+                query: function(){
+
+                    console.log("hey!!!!!!! I am here!")
+
+                    console.log(`query1: ${query1}`);
+
+                    return query1;
+                }(),
                 timeRange: {
                     type: 'relative',
-                    start:start,
-                    end: end,
+                    start: function(){
+
+                        console.log( `start: ${start}`);
+
+                        return start;
+                    }(),
+                    end: function(){
+
+                        console.log( `end: ${end}`);
+
+                        return end;
+                    }(),
+                    step: step,
                     msUpdateInterval: 5 * 1000,
                 },
             },
@@ -471,6 +490,7 @@ var myChart1 = new Chart(ctx, {
                     type: 'relative',
                     start: start,
                     end: end,
+                    step: step,
                     msUpdateInterval: 5 * 1000,
                 },
             },
@@ -552,6 +572,7 @@ var myChart3 = new Chart(ctx3, {
                    type: 'relative',
                    start: start,
                    end: end,
+                   step: step,
                    msUpdateInterval: 5 * 1000,
                },
            },
@@ -627,6 +648,7 @@ var myChart4 = new Chart(ctx4, {
                    type: 'relative',
                    start: start,
                    end: end,
+                   step: step,
                    msUpdateInterval: 5 * 1000,
                },
            },
@@ -844,6 +866,6 @@ var myChart6 = new Chart(ctx6, {
    plugins: [
        ChartDatasourcePrometheusPlugin,
    ],
-});
+}); 
  
 }

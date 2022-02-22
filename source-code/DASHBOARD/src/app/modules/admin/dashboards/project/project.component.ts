@@ -566,6 +566,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.api.getnb_nodes().subscribe(
             resp => {
                 this.node = resp.body['data']['result']['0']['value']['1'];
+                console.log("nodes", this.node)
             });
 
     }
@@ -575,7 +576,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                 resp => {
 
                     this.services = parseFloat(resp.body['data']['result']['0']['value']['1']);
-                    this.services = this.services
+                    console.log("services", this.services)
                     this.chart3.data = [['nb services', this.services]]
 
                 });
