@@ -131,6 +131,7 @@ export class FinanceComponent implements OnInit, AfterViewInit, OnDestroy {
       weights.push(this.objectives[8])
     }
     console.log(weights)
+    this.resp['objectives']=weights
     this.api.weights(weights)
       .subscribe(
         resp => {
@@ -174,6 +175,7 @@ export class FinanceComponent implements OnInit, AfterViewInit, OnDestroy {
    */
 
   save() {
+    
     console.log(this.dataSource1['filteredData'][0]['power_consumption'])
     console.log(this.dataSource['filteredData'][0]['max_power_consumption'])
     this.click2 = true

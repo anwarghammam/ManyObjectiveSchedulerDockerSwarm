@@ -10,7 +10,8 @@ import 'rxjs/Rx';
 })
 
 export class ApiService implements OnInit{
- url="http://192.168.99.118:9090/"
+ //url="http://141.215.80.174:9090/"
+ url="http://192.168.99.122:9090/"
  all_current_data
  eliminate_services=['p_node-exporter','p_cadvisor','p_prometheus','p_grafana']
  public dataSubject = new Subject<number>();
@@ -143,6 +144,21 @@ energy():Observable<HttpResponse<any>>{
    
     
   }
+
+  public getnbcontainers():Observable<any>{
+    return this.http.get<JSON>("http://localhost:5002/getnbcontainers/", { observe: 'response' })
+   
+    
+  }
+
+  public totalnbcontainerspernode():Observable<any>{
+    return this.http.get<JSON>("http://localhost:5002/nbcontainers/", { observe: 'response' })
+   
+    
+  }
+
+
+
  
 
 

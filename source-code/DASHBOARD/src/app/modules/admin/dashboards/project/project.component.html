@@ -238,11 +238,9 @@
 
                                         <canvas id="myChart1"> </canvas>
                                         <canvas id="myChart2"> </canvas>
-        
                                         <canvas id="myChart3"> </canvas>
                                         <canvas id="myChart4"> </canvas>
-                                        <canvas id="myChart5"> </canvas>
-                                        <canvas id="myChart6"> </canvas>
+                                        
                                        
                                        
 
@@ -277,7 +275,7 @@
                                                 <div class="flex flex-col items-center mt-2">
                                                     <div
                                                         class="text-5xl sm:text-5xl font-bold tracking-tight leading-none text-blue-500">
-                                                        {{services}}</div>
+                                                        {{total_containers}}</div>
                                                     <div class="text-lg font-medium text-blue-600 dark:text-blue-500">
                                                         Services</div>
 
@@ -538,7 +536,7 @@
 
                                             <div class="mt-8">
                                                 <div class="-my-3 divide-y">
-                                                    <ng-container *ngFor="let con of node['containers'];let j = index">
+                                                    <ng-container *ngFor="let con of containersPerNodes[i];let j = index">
                                                         <div class="grid grid-cols-2 py-3">
                                                             <div class="flex items-center">
                                                                 <div class="flex-0 w-2 h-2 rounded-full"
@@ -547,8 +545,7 @@
                                                                 <div class="ml-3 truncate">{{con}}
                                                                 </div>
                                                             </div>
-                                                            <div class="font-medium text-right">
-                                                                {{node['priorities'][j]}}</div>
+                                                           
                                                            
                                                         </div>
                                                     </ng-container>

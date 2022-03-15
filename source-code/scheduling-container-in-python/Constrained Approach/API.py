@@ -11,11 +11,13 @@ from flask import Flask, jsonify
 import json
 import requests
 import subprocess
+import os
 from launchAlgo import transform
 from flask_restful import Api
 from flask_cors import CORS
 app = Flask(__name__)
 api = Api(app)
+import random
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 from instance.Instance import Instance
 from Problem.Instance_from_Json import createInstance
@@ -24,10 +26,12 @@ instance=Instance()
 MyInstance=createInstance(instance)
 url=''
 master=''
+master_id=0
 
-for node in MyInstance.nodes:
+for i,node in enumerate(MyInstance.nodes):
     if node.Status=="Leader":
         master=node.name
+        master_id=i
 
 
 @app.route('/getjson/', methods=['GET'])
@@ -166,11 +170,34 @@ def get_nodes():
 
         machines=[]
         print(master)
+        
+        empty=[]
+        for node in MyInstance.nodes:
+            with  open(r"./test3.txt",'w') as file :
+        
+                cmd = ('docker-machine ssh '+str(node.name)+' docker node ls').split()
+                #cmd = ('ssh pi@'+str(master)+ ' docker node ls').split()
+
+                p = subprocess.Popen(cmd,stdout=file)
+                output, errors = p.communicate()
+    
+                if os.path.getsize(r"./test3.txt") == 0:
+                    empty.append(0)
+                else:
+                    empty.append(1)
+        print(empty)
+        new_master_index=empty.index(1)
+        new_master=MyInstance.nodes[new_master_index].name
+        print(master, new_master)
+        
+        
+        
+
         with  open(r"./test3.txt",'w') as file :
 
 
             #cmd = ('docker-machine ssh manager docker node ls').split()
-            cmd = ('docker-machine ssh '+str(master)+ ' docker node ls').split()
+            cmd = ('docker-machine ssh '+str(new_master)+ ' docker node ls').split()
             #cmd = ('ssh pi@'+str(master)+ ' docker node ls').split()
 
             p = subprocess.Popen(cmd,stdout=file)
@@ -203,7 +230,7 @@ def get_nodes():
                         data['nodes'][i]['activated']="false"
                     with open(r"./instanceExamples/data.json", "w") as file:
                         json.dump(data, file)
-                    new_approach()
+                    #new_approach()
                         
                     
                 if (node_info[2]=='Ready' and MyInstance.nodes[i].activated=='false'):
@@ -214,19 +241,25 @@ def get_nodes():
                     with open(r"./instanceExamples/data.json", "w") as file:
                         json.dump(data, file)
                         
-                    new_approach()
-                        
+                    #new_approach()
+           
+            print("old manager is ",master, master_id)
+            print("new manager is ",new_master, new_master_index)
                 
-            if (info[1][4]=='Unreachable'):
+            if (info[master_id][4]=='Unreachable'):
+                
                
                 msg="Leader is down, another manager has been selected!"
+                print(msg)
                 with open(r"./instanceExamples/data.json", "r") as file:
                     data= json.load(file)
-                    data['nodes'][0]['activated']="false"
+                    data['nodes'][master_id]['activated']="false"
+                    data['nodes'][master_id]['Manager Status']="Unreachable"
+                    data['nodes'][new_master_index]['Manager Status']="Leader"
                 with open(r"./instanceExamples/data.json", "w") as file:
                     json.dump(data, file)
-                new_approach()   
-               
+                #new_approach()   
+                
                 
                
                 return(jsonify(msg))
@@ -243,7 +276,7 @@ def get():
     
    
     
-    cmd = ('docker-machine '+str(master)+' docker stack deploy --compose-file initial-docker-compose.yml p').split()
+    cmd = ('docker-machine '+str(master)+' docker stack deploy --compose-file initial-docker-compose.yml --with-registry-auth p').split()
     #cmd = ('ssh pi@'+str(Instance.nodes[0].name)+' docker stack deploy --compose-file initial-docker-compose.yml p').split()
 
     p = subprocess.Popen(cmd,stdout = subprocess.PIPE)
@@ -281,27 +314,41 @@ def get():
 
 #     return (jsonify('done'))
 
+
 @app.route('/getmem/', methods=['GET'])
 def get_mem_per_container():
     
-    for node in MyInstance.nodes:
+    
+    
+    with open(r"./instanceExamples/data.json", "r") as file:
+        data= json.load(file)
+    for con in data['containers']:
+        
+        con['mem_usage']=random.uniform(1, 20)
+        con['cpu_usage']=random.uniform(0.001, 5)
 
-        r = requests.get(url+'api/v1/query?query=avg_over_time(container_memory_usage_bytes%7Bcontainer_label_com_docker_swarm_node_id%3D~"'+str(node.cluster_id[0])+'"%2C%20id%3D~"%2Fdocker%2F.*"%7D%5B5m%5D)%2F1024%2F1024&g0.tab=1')
+    with open(r"./instanceExamples/data.json", "w") as file: 
+        json.dump(data, file)
+    
+    
+    # for node in MyInstance.nodes:
+
+    #     r = requests.get(url+'api/v1/query?query=avg_over_time(container_memory_usage_bytes%7Bcontainer_label_com_docker_swarm_node_id%3D~"'+str(node.cluster_id[0])+'"%2C%20id%3D~"%2Fdocker%2F.*"%7D%5B5m%5D)%2F1024%2F1024&g0.tab=1')
 
 
-        for metric in json.loads(r.text)['data']['result']:
+    #     for metric in json.loads(r.text)['data']['result']:
 
-            name=(metric['metric']['name'])
-            with open(r"./instanceExamples/data.json", "r") as file:
-                data= json.load(file)
-            for con in data['containers']:
-                if (con['name'] in name):
+    #         name=(metric['metric']['name'])
+    #         with open(r"./instanceExamples/data.json", "r") as file:
+    #             data= json.load(file)
+    #         for con in data['containers']:
+    #             if (con['name'] in name):
 
-                    con['mem_usage']=float(metric['value'][1])
+    #                 con['mem_usage']=float(metric['value'][1])
 
-            with open(r"./instanceExamples/data.json", "w") as file:
+    #         with open(r"./instanceExamples/data.json", "w") as file:
 
-                json.dump(data, file)
+    #             json.dump(data, file)
 
     for node in MyInstance.nodes:
         #print(node.cluster_id)
@@ -322,26 +369,29 @@ def get_mem_per_container():
 
             json.dump(data, file)
             
-    for node in MyInstance.nodes:
+            
+            
+    # for node in MyInstance.nodes:
 
-        r = requests.get(url+'api/v1/query?query=sum(irate(container_cpu_usage_seconds_total%7Bcontainer_label_com_docker_swarm_node_id%3D~"'+str(node.cluster_id[0])+'"%2C%20id%3D~"%2Fdocker%2F.*"%7D%5B5m%5D))%20by%20(name)%20*%20100%20&g0.tab=1')
+    #     r = requests.get(url+'api/v1/query?query=sum(irate(container_cpu_usage_seconds_total%7Bcontainer_label_com_docker_swarm_node_id%3D~"'+str(node.cluster_id[0])+'"%2C%20id%3D~"%2Fdocker%2F.*"%7D%5B5m%5D))%20by%20(name)%20*%20100%20&g0.tab=1')
 
-        for metric in json.loads(r.text)['data']['result']:
+    #     for metric in json.loads(r.text)['data']['result']:
 
-            name=(metric['metric']['name'])
+    #         name=(metric['metric']['name'])
 
-            with open(r"./instanceExamples/data.json", "r") as file:
-                data= json.load(file)
-            for con in data['containers']:
-                if (con['name'] in name):
+    #         with open(r"./instanceExamples/data.json", "r") as file:
+    #             data= json.load(file)
+    #         for con in data['containers']:
+    #             if (con['name'] in name):
 
-                    con['cpu_usage']=float(metric['value'][1])
+    #                 con['cpu_usage']=float(metric['value'][1])
 
-            with open(r"./instanceExamples/data.json", "w") as file:
+    #         with open(r"./instanceExamples/data.json", "w") as file:
 
-                json.dump(data, file)
+    #             json.dump(data, file)
 
     return (jsonify('done'))
+
 
 
 # @app.route('/getMaxmem/', methods=['GET'])
@@ -370,7 +420,97 @@ def get_mem_per_container():
 
 #     return (jsonify('done'))
 
+@app.route('/getnbcontainers/', methods=['GET'])   
+def getcontainerspernode():
+    
+    containers=[]
+    
+    for node in MyInstance.nodes:
+        containers_Per_Node=[]
+        
+        with  open(r"./test4.txt",'w') as file :
 
+
+            #cmd = ('docker-machine ssh manager docker node ls').split()
+            #cmd = ('docker-machine ssh '+str(master)+ ' docker node ls').split()
+            cmd = ('docker-machine ssh '+str(node.name)+ ' docker ps').split()
+
+            p = subprocess.Popen(cmd,stdout=file)
+            output, errors = p.communicate()
+            
+        with open(r"./test4.txt",'r') as file: 
+            for line in file:
+            
+                if (line.find("*")!=-1):
+                    line=line.replace("*",'')
+                    
+                   
+                else:
+                    groupe=line.split()
+                    print(groupe)
+                    containers_Per_Node.append(groupe[-1])
+                
+                
+
+        
+        del containers_Per_Node[0]
+        print(containers_Per_Node)
+        containers.append(containers_Per_Node)
+    print(containers)
+
+    response = app.response_class(
+        response=json.dumps(containers),
+        mimetype='application/json'
+    )
+    return response
+
+
+@app.route('/nbcontainers/', methods=['GET'])   
+def nbcontainerspernode():
+    
+    containers=[]
+    
+    for node in MyInstance.nodes:
+        containers_Per_Node=[]
+        
+        with  open(r"./test5.txt",'w') as file :
+
+
+            #cmd = ('docker-machine ssh manager docker node ls').split()
+            #cmd = ('docker-machine ssh '+str(master)+ ' docker node ls').split()
+            cmd = ('docker-machine ssh '+str(node.name)+ ' docker ps').split()
+
+            p = subprocess.Popen(cmd,stdout=file)
+            output, errors = p.communicate()
+            
+        with open(r"./test5.txt",'r') as file: 
+            for line in file:
+            
+                if (line.find("*")!=-1):
+                    line=line.replace("*",'')
+                    
+                   
+                else:
+                    groupe=line.split()
+                    print(groupe)
+                    containers_Per_Node.append(groupe[-1])
+                
+                
+
+        
+        del containers_Per_Node[0]
+        print(containers_Per_Node)
+        containersPernode=[str(node.name),len(containers_Per_Node)]
+        containers.append(containersPernode)
+    print(containers)
+
+    response = app.response_class(
+        response=json.dumps(containers),
+        mimetype='application/json'
+    )
+    return response
+            
+    
 
 @app.route('/newapproach/', methods=['GET'])
 
@@ -393,7 +533,7 @@ def new_approach():
 
     #cmd = ('docker-machine ssh manager docker stack deploy --compose-file updated-docker-compose.yml p ').split()
     #cmd = ('docker-machine ssh '+str(Instance.nodes[0].name)+' docker stack deploy --compose-file updated-docker-compose.yml p ').split()
-    cmd = ('ssh pi@'+str(master)+' docker stack deploy --compose-file updated-docker-compose.yml p ').split()
+    cmd = ('ssh pi@'+str(master)+' docker stack deploy --compose-file updated-docker-compose.yml --with-registry-auth p ').split()
     
 
     p = subprocess.Popen(cmd)

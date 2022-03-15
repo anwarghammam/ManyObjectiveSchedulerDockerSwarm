@@ -7,15 +7,16 @@
  var ctx2 = document.getElementById('myChart2').getContext('2d');
  var ctx3 = document.getElementById('myChart3').getContext('2d');
  var ctx4 = document.getElementById('myChart4').getContext('2d');
- var ctx5 = document.getElementById('myChart5').getContext('2d');
- var ctx6 = document.getElementById('myChart6').getContext('2d');
+ //var ctx5 = document.getElementById('myChart5').getContext('2d');
+ //var ctx6 = document.getElementById('myChart6').getContext('2d');
  // var ctx7 = document.getElementById('myChart7').getContext('2d');
  // var ctx8 = document.getElementById('myChart8').getContext('2d');
 
  //var ctx9 = document.getElementById('myChart9').getContext('2d');
  //var ctx10 = document.getElementById('myChart10').getContext('2d');
 
- url="http://192.168.99.118:9090/";
+ //url="http://141.215.80.174:9090/";
+ url="http://192.168.99.122:9090/";
  //url=Managerurl
 
  
@@ -23,8 +24,8 @@
  const query2 = 'sum(node_load5 * on(instance) group_left(node_name) node_meta) by (node_name)';
  const query3 ='count(node_meta * on(instance) group_left(node_name) node_meta)';
  const query4 ='sum((node_memory_MemTotal_bytes/1000000 - node_memory_MemFree_bytes/1000000 - node_memory_Cached_bytes/1000000 - node_memory_Buffers_bytes/1000000 - node_memory_Slab_bytes/1000000) * on(instance) group_left(node_name) node_meta) by (node_name)'
-const query5="sum(rate(container_network_receive_bytes_total[5m]) * on(container_label_com_docker_swarm_node_id) group_left(node_name) node_meta) by (node_name)"
-const query6="sum(rate(container_network_transmit_bytes_total[5m]) * on(container_label_com_docker_swarm_node_id) group_left(node_name) node_meta) by (node_name)" 
+const query5='sum(rate(container_network_receive_bytes_total[5m]) * on(container_label_com_docker_swarm_node_id) group_left(node_name) node_meta) by (node_name)'
+const query6='sum(rate(container_network_transmit_bytes_total[5m]) * on(container_label_com_docker_swarm_node_id) group_left(node_name) node_meta) by (node_name)' 
 
 
 //const query9='topk(10, avg_over_time(container_memory_usage_bytes{container_label_com_docker_swarm_node_id=~"'+String(url_node)+'", id=~"/docker/.*"}[5m])/1000/1000)'
@@ -700,7 +701,7 @@ var myChart4 = new Chart(ctx4, {
    ],
 });
 
-var myChart5 = new Chart(ctx5, {
+/* var myChart5 = new Chart(ctx5, {
    type: 'line',
    data: {},
    options: {
@@ -731,6 +732,7 @@ var myChart5 = new Chart(ctx5, {
                    type: 'relative',
                    start: start,
                    end: end,
+                   step:step,
                    msUpdateInterval: 5 * 1000,
                },
            },
@@ -818,6 +820,7 @@ var myChart6 = new Chart(ctx6, {
                    type: 'relative',
                    start: start,
                    end: end,
+                   step:step,
                    msUpdateInterval: 5 * 1000,
                },
            },
@@ -866,6 +869,6 @@ var myChart6 = new Chart(ctx6, {
    plugins: [
        ChartDatasourcePrometheusPlugin,
    ],
-}); 
+}); */
  
 }

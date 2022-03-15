@@ -30,10 +30,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
     url
     data1V = []
     color
+    nbcontainersPerNode=[]
     StatusMsg=''
     nodes_namesV = []
     nodes_power_consumption = []
-
+    containersPerNodes=[]
     chartGithubIssues: ApexOptions = {};
     chartTaskDistribution: ApexOptions = {};
     chartBudgetDistribution: ApexOptions = {};
@@ -43,7 +44,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     data: any;
     selectedProject: string = 'ACME Corp. Backend App';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
+    public pieChartLabels
 
     @ViewChild('googlechart')
 
@@ -151,7 +152,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     public nodes_names = []
     public total_cpu
     public total_mem
-    public pieChartData = [3, 3, 3, 3, 3, 3]
+    public pieChartData = [3, 3, 3,3,3,3]
     infos: JSON[]
     public names = []
 
@@ -179,6 +180,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
         private _router: Router
     ) {
 
+
+        
          
         
 
@@ -256,8 +259,54 @@ export class ProjectComponent implements OnInit, OnDestroy {
                console.log(resp)
             });
 
+
+            this.api.getnbcontainers()
+            .subscribe(resp => {
+               this.containersPerNodes=resp.body
+               console.log(resp)
+               this.containersPerNodes.forEach(containers => {
+
+                this.total_containers+=containers.length
+        
+
+        })
+            });
+
+
+            this.api.totalnbcontainerspernode()
+            .subscribe(resp => {
+               this.nbcontainersPerNode=resp.body
+               console.log(this.nbcontainersPerNode)
+               this.names=[]
+               this.pieChartData=[]
+                    this.nbcontainersPerNode.forEach(node => {
+                        console.log(node)
+                   
+                    this.names.push(node[0])
+                    
+                    this.pieChartData.push(node[1])
+                        
+                        
+                    
+
+               
+
+                    });
+               
+                    console.log(this.pieChartData)
+                    console.log(this.names)
+                    this.pieChartLabels = this.names;
+
+        })
+
+            
+            
+
+            
+
         
         this.nb_info()
+        
 
 
         /**
@@ -386,6 +435,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     initrealdata(){
         all(String(this.api.url));
+       // this.get_containers();
     }
 
 
@@ -425,13 +475,32 @@ export class ProjectComponent implements OnInit, OnDestroy {
                 resp => {
 
                     this.resp = resp.body
+                    console.log(this.resp)
 
                     this.containers_info = resp.body['containers']
+                    //this.total_containers=this.containers_info.length
 
 
 
                     this.nodes_info = resp.body["nodes"]
+                    let currentstate=resp.body["currentState"]
+
                     console.log(this.nodes_info)
+                    
+                    
+
+                
+                    
+                                    //this.total_containers += parseInt(resp.body['data']['result']['0']['value']['1']);
+                                    
+                                   // this.data.push([val[1], this.con])
+            
+                                   // this.chart4.data = [['number of containers', this.total_containers]]
+            
+                               
+                          
+                    
+
 
 
 
@@ -534,20 +603,20 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     }
     nb_con() {
-        console.log(this.data1)
-
+       
         this.data1.forEach(val => {
-
-            this.pieChartData = []
+            //this.names.push(val[0])
+            //this.pieChartData = []
             this.api.nb_con_node(String(val[1]))
                 .subscribe(
                     resp => {
-
+                        console.log(val[1])
+                        console.log(resp)
                         this.con = resp.body['data']['result']['0']['value']['1'];
-                        this.names.push(val[0])
-                        this.total_containers += parseInt(resp.body['data']['result']['0']['value']['1']);
+                        //this.names.push(val[0])
+                        //this.total_containers += parseInt(resp.body['data']['result']['0']['value']['1']);
                         console.log("total containers  " + this.total_containers)
-                        this.pieChartData.push(this.con)
+                        //this.pieChartData.push(this.con)
                         this.data.push([val[1], this.con])
 
                         this.chart4.data = [['number of containers', this.total_containers]]
@@ -565,6 +634,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     number_node() {
         this.api.getnb_nodes().subscribe(
             resp => {
+                console.log(resp)
                 this.node = resp.body['data']['result']['0']['value']['1'];
                 console.log("nodes", this.node)
             });
@@ -574,8 +644,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
         this.api.getnb_services()
             .subscribe(
                 resp => {
-
-                    this.services = parseFloat(resp.body['data']['result']['0']['value']['1']);
+                    console.log(resp)
+                    //this.services = parseFloat(resp.body['data']['result']['0']['value']['1']);
                     console.log("services", this.services)
                     this.chart3.data = [['nb services', this.services]]
 
@@ -628,6 +698,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
             .subscribe(
                 resp => {
                     this.info = resp.body['data']['result']
+                    console.log(this.info)
 
                     for (var val of this.info) {
 
@@ -669,8 +740,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     }
 
-
-    public pieChartLabels = this.names;
+   
+   
 
 
 

@@ -1,0 +1,4 @@
+CONTAINER ID        IMAGE                                          COMMAND                  CREATED             STATUS              PORTS               NAMES
+0bd2b0ddf98f        stefanprodan/swarmprom-prometheus:v2.5.0       "/etc/prometheus/doc…"   18 minutes ago      Up 18 minutes       9090/tcp            p_prometheus.1.pjur44wnu66ulo6kgfwhr8qfb
+67ab728ed10c        stefanprodan/swarmprom-node-exporter:v0.16.0   "/etc/node-exporter/…"   23 minutes ago      Up 23 minutes       9100/tcp            p_node-exporter.h2d8iyva8rtcpzoxba7g0y4bb.ct0c7rvr718lpo8hoeapz0v6n
+98b88dcc0d73        google/cadvisor:latest                         "/usr/bin/cadvisor -…"   23 minutes ago      Up 23 minutes       8080/tcp            p_cadvisor.h2d8iyva8rtcpzoxba7g0y4bb.g4cu6dfbrayfpzu9cf9wz6m5f
