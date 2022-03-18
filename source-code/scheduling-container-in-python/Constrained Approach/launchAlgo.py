@@ -188,9 +188,14 @@ def transform(instance):
     Data().updateDockerCompose(instance.containers,instance.images,instance.currentState,instance.nodes,'DockerComposeFiles/initial-docker-compose.yml')
     
     services_to_shutdown=Data().updateDockerCompose(instance.containers,instance.images,candidate.variables,instance.nodes,'DockerComposeFiles/updated-docker-compose.yml')
+    
+    for i,node in enumerate(instance.nodes):
+    if node.Status=="Leader":
+        master=node.name
+        master_id=i
     for service in services_to_shutdown:
         #print("docker-machine ssh manager docker service rm" +str(service))
-        cmd = ("docker-machine ssh manager docker service rm "  +str(service)).split()
+        cmd = ("docker-machine ssh "+str(master)+" docker service rm "  +str(service)).split()
 
         p = subprocess.Popen(cmd)
         output, errors = p.communicate() 
