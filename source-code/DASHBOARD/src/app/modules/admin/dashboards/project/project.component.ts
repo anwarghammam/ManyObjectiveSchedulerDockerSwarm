@@ -659,6 +659,15 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
 
         }
+        
+        if (resource[2] == 'Leader') {
+            resource[2] = 'worker'
+
+
+        }
+        
+        
+        
 
         this.api.Status(this.total_resources)
             .subscribe(
