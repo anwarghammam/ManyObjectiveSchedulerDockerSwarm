@@ -127,14 +127,16 @@ def getStatus():
    
 def update(result):
     
+    
     with open(r"./instanceExamples/data.json", "r") as file:
         data= json.load(file)
     for row in result:
+        
         for node in data['nodes']:
             if(node['name']==row[0]):
                 
-                node['Manager Status']=row[2]
-                if(row[2]=='Reachable'):
+                if(row[2]=='Reachable') and node['Manager Status']=='worker':
+                    node['Manager Status']=row[2]
                     
                     #cmd = ('docker-machine ssh manager docker node promote '+str(node['name'])).split()
                     #cmd = ('docker-machine ssh '+str(Instance.nodes[0].name)+' docker node promote '+str(node['name'])).split()
@@ -144,10 +146,22 @@ def update(result):
                     p = subprocess.Popen(cmd)
                     output, errors = p.communicate()
                     
+                if(row[2]=='worker') and node['Manager Status']=='Leader':
+                    node['Manager Status']=row[2]
+                    
+                    
+                    #cmd = ('docker-machine ssh manager docker node promote '+str(node['name'])).split()
+                    #cmd = ('docker-machine ssh '+str(Instance.nodes[0].name)+' docker node promote '+str(node['name'])).split()
+                    cmd = ('docker-machine ssh '+str(master)+' docker node demote '+str(node['name'])).split()
+                    
+                    print(cmd)
+                    p = subprocess.Popen(cmd)
+                    output, errors = p.communicate()
+                
+                    
     with open(r"./instanceExamples/data.json", "w") as file:
         json.dump(data, file)
         
-    
 
 @app.route('/getweights/', methods=['POST'])
 def weights():
