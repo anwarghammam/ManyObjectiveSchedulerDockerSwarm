@@ -11,7 +11,8 @@ import 'rxjs/Rx';
 
 export class ApiService implements OnInit{
  //url="http://141.215.80.174:9090/"
- url="http://192.168.99.122:9090/"
+ url="http://192.168.99.121:9090/"
+ urlApi="http://localhost:5002/"
  all_current_data
  eliminate_services=['p_node-exporter','p_cadvisor','p_prometheus','p_grafana']
  public dataSubject = new Subject<number>();
@@ -37,22 +38,22 @@ export class ApiService implements OnInit{
   
 
  default():Observable<HttpResponse<any>>{
-   return this.http.get<any>("http://localhost:5002/default", { observe: 'response' });
+   return this.http.get<any>(this.urlApi+"default", { observe: 'response' });
  }
  exectime():Observable<HttpResponse<any>>{
-  return this.http.get<any>("http://localhost:5002/getexectime/", { observe: 'response' });
+  return this.http.get<any>(this.urlApi+"getexectime/", { observe: 'response' });
 }
  newapproach():Observable<HttpResponse<any>>{
-   return this.http.get<any>("http://localhost:5002/newapproach/", { observe: 'response' });
+   return this.http.get<any>(this.urlApi+"newapproach/", { observe: 'response' });
  }
  getcpu():Observable<HttpResponse<any>>{
-  return this.http.get<any>("http://localhost:5002/getcpu/", { observe: 'response' });
+  return this.http.get<any>(this.urlApi+"getcpu/", { observe: 'response' });
 }
 getmem():Observable<HttpResponse<any>>{
-  return this.http.get<any>("http://localhost:5002/getmem/", { observe: 'response' });
+  return this.http.get<any>(this.urlApi+"getmem/", { observe: 'response' });
 }
 getTotalMem():Observable<HttpResponse<any>>{
-  return this.http.get<any>("http://localhost:5002/getMaxmem/", { observe: 'response' });
+  return this.http.get<any>(this.urlApi+"getMaxmem/", { observe: 'response' });
 }
  getnb_nodes()
  {
@@ -111,48 +112,48 @@ getTotalMem():Observable<HttpResponse<any>>{
    }
 
    get_constraints():Observable<HttpResponse<any>>{
-    return this.http.get<any>("http://localhost:5002/getjson/", { observe: 'response' });
+    return this.http.get<any>(this.urlApi+"getjson/", { observe: 'response' });
   }
   updateStatus():Observable<HttpResponse<any>>{
-    return this.http.get<any>("http://localhost:5002/UpdateStatus/", { observe: 'response' });
+    return this.http.get<any>(this.urlApi+"UpdateStatus/", { observe: 'response' });
   }
 
  public update_constraints(entity:any):Observable<any>{
-    return this.http.post<JSON>("http://localhost:5002/update/",JSON.stringify(entity))
+    return this.http.post<JSON>(this.urlApi+"update/",JSON.stringify(entity))
    
     
   }
 energy():Observable<HttpResponse<any>>{
-    return this.http.get<any>("http://localhost:5002/getenergy/", { observe: 'response' });
+    return this.http.get<any>(this.urlApi+"getenergy/", { observe: 'response' });
   }
 
   public weights(entity:any):Observable<any>{
-    return this.http.post<JSON>("http://localhost:5002/getweights/",JSON.stringify(entity))
+    return this.http.post<JSON>(this.urlApi+"getweights/",JSON.stringify(entity))
    
     
   }
 
   public Status(entity:any):Observable<any>{
-    return this.http.post<JSON>("http://localhost:5002/getStatus/",JSON.stringify(entity))
+    return this.http.post<JSON>(this.urlApi+"getStatus/",JSON.stringify(entity))
    
     
   }
 
   
   public geturl(entity:any):Observable<any>{
-    return this.http.post<JSON>("http://localhost:5002/geturl/",JSON.stringify(entity))
+    return this.http.post<JSON>(this.urlApi+"geturl/",JSON.stringify(entity))
    
     
   }
 
   public getnbcontainers():Observable<any>{
-    return this.http.get<JSON>("http://localhost:5002/getnbcontainers/", { observe: 'response' })
+    return this.http.get<JSON>(this.urlApi+"getnbcontainers/", { observe: 'response' })
    
     
   }
 
   public totalnbcontainerspernode():Observable<any>{
-    return this.http.get<JSON>("http://localhost:5002/nbcontainers/", { observe: 'response' })
+    return this.http.get<JSON>(this.urlApi+"nbcontainers/", { observe: 'response' })
    
     
   }
